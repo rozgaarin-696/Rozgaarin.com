@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RozgaarIn Admin | Elite Control Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        :root { 
+            --primary: #3b82f6; --success: #10b981; --danger: #ef4444; --dark-bg: #0f172a; 
+            --glass: rgba(30, 41, 59, 0.75); --text-main: #f8fafc;
+        }
+
+        body { 
+            font-family: 'Inter', sans-serif; background: #0f172a; color: var(--text-main); 
+            margin: 0; padding: 20px; -webkit-font-smoothing: antialiased;
+        }
+
+        /* Brand Header styling */
+        .brand-container { text-align: center; margin-bottom: 30px; }
+        .brand-logo { 
+            width: 80px; height: auto; margin-bottom: 10px; 
+            filter: drop-shadow(0 5px 15px rgba(59, 130, 246, 0.4)); 
+        }
+        .brand-name { font-size: 26px; font-weight: 900; margin: 0; background: linear-gradient(135deg, #fff, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .brand-dot { color: var(--success); -webkit-text-fill-color: var(--success); }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: var(--glass); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: center; transform: translateZ(0); }
+        .stat-card h3 { margin: 0; font-size: 12px; color: #94a3b8; text-transform: uppercase; }
+        .stat-card p { margin: 5px 0 0; font-size: 24px; font-weight: 800; color: var(--primary); }
+
+        /* Area Filters */
+        .admin-filters { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 10px; -webkit-overflow-scrolling: touch; }
+        .filter-chip { padding: 10px 22px; background: rgba(255,255,255,0.05); border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); font-size: 13px; white-space: nowrap; cursor: pointer; transition: 0.3s; }
+        .active-filter { background: var(--primary); border-color: var(--primary); font-weight: bold; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+
+        /* Global Records List */
+        .data-card { background: var(--glass); padding: 20px; border-radius: 25px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); animation: fadeInUp 0.4s; position: relative; }
+        .role-tag { position: absolute; top: 18px; right: 18px; font-size: 10px; padding: 5px 10px; border-radius: 8px; font-weight: 800; text-transform: uppercase; }
+        
+        .btn-action { padding: 12px; border-radius: 12px; border: none; font-size: 12px; font-weight: 800; cursor: pointer; transition: 0.2s; width: 100%; margin-top: 15px; }
+        .btn-delete { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid var(--danger); }
+
+        #admin-login { max-width: 400px; margin: 80px auto; text-align: center; }
+        input { width: 100%; padding: 16px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 15px; box-sizing: border-box; margin-bottom: 15px; font-size: 16px; outline: none; }
+    </style>
+</head>
+<body>
+
+<div id="login-box">
+    <div id="admin-login" class="animate__animated animate__fadeIn">
+        <img src="logo.png" style="width: 100px; height: auto; margin-bottom: 20px;" onerror="this.style.display='none'">
+        <h1 class="brand-name">Rozgaar<span class="brand-dot">In</span> Admin</h1>
+        <p style="color:#94a3b8; font-size: 14px; margin-bottom: 30px; margin-top: 10px;">Master Access for Network Management</p>
+        <input type="password" id="adminPass" placeholder="Admin Key">
+        <button class="btn-action" style="background:var(--primary); color:#fff; margin-top:0;" onclick="checkAdmin()">UNLOCK SYSTEM</button>
+    </div>
+</div>
+
+<div id="admin-content" style="display:none;">
+    <div class="brand-container">
+        <img src="logo.png" alt="RozgaarIn" class="brand-logo" onerror="this.style.display='none'">
+        <h1 class="brand-name">Rozgaar<span class="brand-dot">In</span> Center</h1>
+        <p style="font-size:12px; opacity:0.6; margin-top:5px;">System Administrator: Pranjal</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card"><h3>Active Staff</h3><p id="countSeeker">0</p></div>
+        <div class="stat-card"><h3>Live Deals</h3><p id="countDeals" style="color:var(--success)">0</p></div>
+    </div>
+
+    <div class="admin-filters">
+        <div class="filter-chip active-filter" onclick="loadAllData('all', this)">All Network</div>
+        <div class="filter-chip" onclick="loadAllData('Rudrapur, Deoria', this)">📍 Rudrapur</div>
+        <div class="filter-chip" onclick="loadAllData('Deoria City, UP', this)">📍 Deoria City</div>
+    </div>
+
+    <div id="masterList"></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<script>
+    const firebaseConfig = { apiKey: "AIzaSyD3hc6Rz1gHZq8c71AHp5NSw8eSZT2-Mik", authDomain: "savitri-job-bridge.firebaseapp.com", projectId: "savitri-job-bridge", storageBucket: "savitri-job-bridge.firebasestorage.app", messagingSenderId: "721066136910", appId: "1:721066136910:web:61b5d58b31d8ab481f7a1f" };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function checkAdmin() {
+        const pass = document.getElementById('adminPass').value;
+        if(pass === "Pranjal123") {
+            document.getElementById('login-box').style.display = 'none';
+            document.getElementById('admin-content').style.display = 'block';
+            loadAllData('all');
+        } else {
+            Swal.fire({ icon: 'error', title: 'Unauthorized', text: 'Master code invalid!', background: '#111827', color: '#fff' });
+        }
+    }
+
+    async function loadAllData(filterArea, el) {
+        if(el) {
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active-filter'));
+            el.classList.add('active-filter');
+        }
+
+        const list = document.getElementById('masterList');
+        list.innerHTML = "<p style='text-align:center; opacity:0.5;'>Scanning RozgaarIn Database...</p>";
+        
+        let query = db.collection("JobSeekers").orderBy("time", "desc");
+        if(filterArea !== 'all') {
+            query = query.where("location", "==", filterArea);
+        }
+
+        const snap = await query.get();
+        let h = "";
+        let deals = 0;
+        let seekers = 0;
+
+        snap.forEach(doc => {
+            const d = doc.data();
+            seekers++;
+            if(d.dealStatus) deals++;
+
+            h += `<div class="data-card animate__animated animate__fadeInUp">
+                    <span class="role-tag" style="background:${d.dealStatus ? 'var(--success)' : 'var(--primary)'}">
+                        ${d.dealStatus || 'Available'}
+                    </span>
+                    <b style="font-size:17px; color:var(--primary);">👤 ${d.name}</b><br>
+                    <small style="color:#94a3b8; font-weight:bold;">📞 ${d.phone} | 🗺️ ${d.location}</small>
+                    <div style="margin-top:12px; background:rgba(0,0,0,0.2); padding:10px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                        <span style="font-size:12px; color:var(--success); font-weight:700;">Skill: ${d.skill}</span><br>
+                        ${d.hireRequestedBy ? `<span style="font-size:11px; color:#fff; display:block; margin-top:5px;">🏢 Company: ${d.hireRequestedBy} (${d.employerContact})</span>` : '<span style="font-size:11px; color:#94a3b8;">Status: Listing Open</span>'}
+                    </div>
+                    <button onclick="deleteDoc('${doc.id}')" class="btn-action btn-delete">DELETE PERMANENTLY</button>
+                  </div>`;
+        });
+
+        document.getElementById('countSeeker').innerText = seekers;
+        document.getElementById('countDeals').innerText = deals;
+        list.innerHTML = h || "<p style='text-align:center; padding:40px;'>No records in this sector.</p>";
+    }
+
+    function deleteDoc(id) {
+        Swal.fire({
+            title: 'Delete from RozgaarIn?',
+            text: "This action cannot be undone!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            confirmButtonText: 'Confirm Delete',
+            background: '#111827', color: '#fff'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                db.collection("JobSeekers").doc(id).delete().then(() => {
+                    Swal.fire({ icon:'success', title:'Removed from System', background:'#111827', color:'#fff' });
+                    loadAllData('all');
+                });
+            }
+        });
+    }
+</script>
+</body>
+</html>
