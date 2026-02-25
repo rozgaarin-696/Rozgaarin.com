@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RozgaarIn | Apna Rozgaar Network</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        /* GLOBAL: Remove Mobile Blue Tap Highlight */
+        * { -webkit-tap-highlight-color: transparent; outline: none; box-sizing: border-box; }
+
+        :root { 
+            --primary: #3b82f6; --primary-dark: #2563eb; 
+            --success: #10b981; --dark-bg: #0f172a; 
+            --glass-bg: rgba(30, 41, 59, 0.6); --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc; --text-muted: #94a3b8;
+            --animate-duration: 0.35s; --danger: #ef4444; 
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #0f172a, #172554);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-main); margin: 0; min-height: 100vh; 
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container { 
+            width: 100%; max-width: 480px; padding: 20px; box-sizing: border-box; 
+            display: flex; flex-direction: column; justify-content: center; min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero-section { text-align: center; margin-bottom: 40px; }
+        .hero-title { 
+            font-size: 42px; font-weight: 800; margin: 0 0 10px 0; 
+            letter-spacing: -1px; display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
+        .text-gradient { background: linear-gradient(to right, #60a5fa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-subtitle { font-size: 15px; color: var(--text-muted); line-height: 1.5; margin: 0; padding: 0 20px;}
+
+        /* Role Cards */
+        .role-selector { display: flex; flex-direction: column; gap: 15px; }
+        .role-card {
+            background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); 
+            border-radius: 24px; padding: 25px; text-align: left; cursor: pointer; 
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); position: relative;
+        }
+        .role-card:active { transform: scale(0.94); background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.5); }
+        .role-icon { font-size: 32px; margin-bottom: 15px; display: inline-block; }
+        .role-card h3 { margin: 0 0 8px 0; font-size: 20px; font-weight: 800; }
+        .role-card p { margin: 0; font-size: 13px; color: var(--text-muted); }
+
+        /* Trust Badge */
+        .trust-badge { margin-top: 40px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 12px; color: var(--text-muted); font-weight: 600; }
+        .pulse-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+
+        /* Forms UI */
+        .auth-section { display: none; width: 100%; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 30px; padding: 25px; box-sizing: border-box; }
+        .back-btn { background: transparent; border: none; color: var(--text-muted); font-size: 14px; padding: 0 0 20px 0; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: 600; width: 100%; text-align: left; transition: transform 0.2s ease;}
+        .back-btn:active { transform: translateX(-8px); color: #fff;}
+        
+        .tab-box { display: flex; background: rgba(0,0,0,0.3); border-radius: 15px; padding: 5px; margin-bottom: 25px; }
+        .tab-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; cursor: pointer; color: var(--text-muted); background: transparent; font-weight: 600; font-family: inherit; font-size: 14px; transition: all 0.2s ease;}
+        .active-tab { background: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+        .tab-btn:active:not(.active-tab) { transform: scale(0.95); background: rgba(255,255,255,0.05); }
+
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 6px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.5px; }
+        input, textarea, select { 
+            width: 100%; padding: 14px 16px; background: rgba(0,0,0,0.25); border: 1px solid var(--glass-border); 
+            color: #fff; border-radius: 15px; box-sizing: border-box; outline: none; font-family: inherit; font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        input:focus { border-color: var(--primary); background: rgba(0,0,0,0.4); box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+        
+        .btn-main { 
+            width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 15px; 
+            font-weight: 800; cursor: pointer; margin-top: 10px; font-size: 16px; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+        .btn-main:active { transform: scale(0.96); box-shadow: 0 0px 5px rgba(59, 130, 246, 0.4); }
+
+        .flex-row { display: flex; gap: 10px; }
+        .flex-row > div { flex: 1; }
+        .pin-box { text-align: center; letter-spacing: 10px; font-size: 20px; font-weight: bold; }
+
+        /* SweetAlert Glass Override */
+        .swal2-popup {
+            background: rgba(30, 41, 59, 0.85) !important; backdrop-filter: blur(25px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important; border-radius: 28px !important;
+            color: #f8fafc !important; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6) !important;
+            padding-bottom: 25px !important;
+        }
+        .swal2-title { color: #fff !important; font-family: 'Plus Jakarta Sans', sans-serif !important; font-weight: 800 !important; }
+        .swal2-html-container { color: #94a3b8 !important; font-family: 'Plus Jakarta Sans', sans-serif !important; }
+        .swal2-confirm { background: var(--primary) !important; border-radius: 14px !important; font-weight: 800 !important; padding: 12px 35px !important; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4) !important; font-family: 'Plus Jakarta Sans', sans-serif !important; }
+
+        /* PHASE 3 CSS */
+        .bottom-nav {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px; background: rgba(30, 41, 59, 0.85);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border); border-radius: 30px; 
+            display: flex; justify-content: space-around; padding: 12px 20px; 
+            z-index: 1000; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6);
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .nav-icon { font-size: 22px; transition: transform 0.3s; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item.active .nav-icon { transform: translateY(-4px) scale(1.1); }
+
+        .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .dash-badge { background: var(--primary); font-size: 10px; padding: 4px 10px; border-radius: 8px; font-weight: 800; letter-spacing: 1px; }
+
+        .search-container { display: flex; gap: 10px; margin-bottom: 15px; }
+        .search-input-wrapper { flex: 1; position: relative; }
+        .search-icon-inside { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); opacity: 0.6; font-size: 16px; }
+        .search-modern { width: 100%; padding: 16px 15px 16px 45px; border-radius: 18px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: #fff; font-size: 14px; outline: none; transition: 0.3s; }
+        .search-modern:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); }
+
+        .offer-card {
+            background: linear-gradient(145deg, rgba(30,41,59,0.9), rgba(15,23,42,0.95));
+            border: 1px solid var(--glass-border); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            border-radius: 24px; padding: 22px; margin-bottom: 20px; position: relative; overflow: hidden; animation: fadeInUp 0.4s ease;
+        }
+        .offer-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); box-shadow: 0 0 15px var(--primary); }
+
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+        .btn-accept { background: var(--success); color: #fff; border: none; padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); transition: 0.2s; }
+        .btn-accept:active { transform: scale(0.95); }
+        .btn-decline { background: rgba(239, 68, 68, 0.1); color: #fca5a5; border: 1px solid var(--danger); padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .btn-decline:active { transform: scale(0.95); background: var(--danger); color: #fff; }
+
+        .toggle-wrapper { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 15px 20px; border-radius: 20px; border: 1px solid var(--glass-border); margin-bottom: 20px; }
+        .toggle-switch { position: relative; display: inline-block; width: 52px; height: 28px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: #94a3b8; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--success); }
+        input:checked + .slider:before { transform: translateX(24px); background-color: #fff; }
+
+        .profile-edit-box { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 25px; margin-bottom: 20px; }
+        
+        .status-badge { font-size: 10px; padding: 4px 8px; border-radius: 12px; font-weight: bold; text-transform: uppercase; float: right; }
+        .badge-pending { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+        .badge-accepted { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+
+        /* SMART AUTOCOMPLETE CSS */
+        .autocomplete-wrapper { position: relative; width: 100%; }
+        .autocomplete-list {
+            position: absolute; top: 100%; left: 0; width: 100%;
+            background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(25px);
+            border: 1px solid var(--primary); border-radius: 15px;
+            max-height: 180px; overflow-y: auto; z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7); display: none; margin-top: 5px;
+        }
+        .autocomplete-item {
+            padding: 14px 18px; color: #fff; font-size: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s;
+        }
+        .autocomplete-item:last-child { border-bottom: none; }
+        .autocomplete-item:hover, .autocomplete-item:active { background: var(--primary); font-weight: bold; }
+
+        /* WHATSAPP ANIMATION */
+        .wa-btn {
+            background: linear-gradient(135deg, #25D366, #128C7E) !important; color: #fff !important;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4) !important; animation: pulse-wa 2s infinite;
+            border: none !important; font-weight: bold !important;
+        }
+        @keyframes pulse-wa {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        /* VIP DYNAMIC RESUME MODAL CSS */
+        .vip-modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 9999;
+            align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;
+        }
+        .vip-resume-card {
+            width: 100%; max-width: 380px; background: linear-gradient(145deg, #111, #1a1a1a);
+            border: 2px solid #d4af37; border-radius: 20px; padding: 30px; position: relative;
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.2);
+        }
+        .gold-text {
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .certified-badge {
+            position: absolute; top: -15px; right: -10px; background: linear-gradient(135deg, #d4af37, #fcf6ba);
+            color: #000; font-size: 11px; font-weight: 900; padding: 5px 12px;
+            border-radius: 20px; box-shadow: 0 4px 10px rgba(212,175,55,0.4); letter-spacing: 0.5px;
+        }
+
+        /* ADMIN CONTROL ROOM CSS */
+        .admin-header { background: linear-gradient(135deg, #ef4444, #991b1b); padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); }
+        .admin-stat-box { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
+        .stat-card { flex: 1; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); padding: 15px; border-radius: 15px; text-align: center; }
+        .stat-card h3 { margin: 0; font-size: 24px; color: #fff; }
+        .stat-card p { margin: 5px 0 0 0; font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: bold; }
+        
+        .admin-user-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .admin-user-info h4 { margin: 0 0 5px 0; font-size: 15px; color: #fff; }
+        .admin-user-info p { margin: 0; font-size: 12px; color: var(--text-muted); }
+        .btn-delete-user { background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: #fca5a5; padding: 8px 15px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-delete-user:active { background: var(--danger); color: #fff; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="landing-view">
+    <div class="hero-section animate__animated animate__fadeInDown">
+        <h1 class="hero-title">Rozgaar<span class="text-gradient">In</span></h1>
+        <p class="hero-subtitle">Aapke shehar ka apna verified rozgaar network. Sahi staff aur sahi kaam, ab aapki ungliyon par.</p>
+    </div>
+
+    <div class="role-selector animate__animated animate__fadeInUp animate__delay-1s">
+        <div class="role-card" onclick="startOnboarding('employer')">
+            <span class="role-icon">🏢</span><h3>Staff Dhoondhein</h3>
+            <p>Apni shop ya business ke liye verified aur anubhavi staff hire karein.</p>
+        </div>
+        <div class="role-card" onclick="startOnboarding('seeker')">
+            <span class="role-icon">👷</span><h3>Staff Baniye</h3>
+            <p>Apne hunar ke hisaab se apne aas-paas behtar salary wali job payein.</p>
+        </div>
+    </div>
+
+    <div class="trust-badge animate__animated animate__fadeIn animate__delay-2s">
+        <div class="pulse-dot"></div> 100% Secure & Verified Local Network
+    </div>
+</div>
+<div class="container auth-section" id="auth-view">
+    <button class="back-btn" onclick="goBack()">← Wapas Jayein</button>
+    <div>
+        <h2 id="auth-title" style="margin-top:0; font-weight:800; font-size:22px; margin-bottom:20px;"></h2>
+        <div class="tab-box">
+            <button class="tab-btn active-tab" id="tab-register" onclick="switchAuthTab('register')">Naya Account</button>
+            <button class="tab-btn" id="tab-login" onclick="switchAuthTab('login')">Login Karein</button>
+        </div>
+        <div id="register-form">
+            <div class="input-group"><label>Mobile Number (Yeh aapki ID hogi)</label><input type="tel" id="rPhone" placeholder="10 Digit Number" maxlength="10"></div>
+            <div id="dynamic-fields"></div>
+            <div class="input-group">
+                <label>Set 4-Digit Login PIN 🔒</label>
+                <input type="password" id="rPin" class="pin-box" placeholder="****" maxlength="4" inputmode="numeric">
+                <p style="font-size:11px; color:var(--text-muted); margin-top:5px;">Yeh PIN yaad rakhein. Agli baar login karne ke liye yahi kaam aayega.</p>
+            </div>
+            <button class="btn-main" onclick="processRegister()">REGISTER ACCOUNT ✨</button>
+        </div>
+        <div id="login-form" style="display:none;">
+            <div class="input-group"><label>Registered Mobile Number</label><input type="tel" id="lPhone" placeholder="10 Digit Number" maxlength="10"></div>
+            
+            <div class="input-group">
+                <label>4-Digit PIN 🔒</label>
+                <input type="password" id="lPin" class="pin-box" placeholder="****" maxlength="4" inputmode="numeric">
+                <div style="text-align: right; margin-top: 8px;">
+                    <a href="javascript:void(0)" onclick="forgotPin()" style="color: var(--primary); font-size: 12px; font-weight: bold; text-decoration: none;">PIN Bhool Gaye?</a>
+                </div>
+            </div>
+            
+            <button class="btn-main" onclick="processLogin()" style="background:var(--success); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);">SECURE LOGIN ➡️</button>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="dash-view" style="display: none; padding-bottom: 100px; padding-top: 10px;">
+    
+    <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 25px;">
+        <h2 style="margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -1px;">Rozgaar<span class="text-gradient">In</span></h2>
+    </div>
+
+    <div class="dash-header">
+        <div>
+            <h2 id="dash-greeting" style="margin:0; font-size:22px; font-weight:800;">Hi, User 👋</h2>
+            <span id="role-badge" class="dash-badge">ROLE</span>
+        </div>
+        <div style="width:45px; height:45px; background:linear-gradient(135deg, var(--primary), var(--success)); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);">👤</div>
+    </div>
+
+    <div id="screen-home" class="nav-screen animate__animated animate__fadeIn">
+        <h3 id="home-title" style="margin-top:0; font-size:18px; border-bottom:1px solid var(--glass-border); padding-bottom:10px;">Dashboard Home</h3>
+        <div id="home-content"></div>
+    </div>
+
+    <div id="screen-search" class="nav-screen animate__animated animate__fadeIn" style="display:none;">
+        <h2 id="search-heading" style="font-weight: 800; margin-top:0;">Staff Dhoondhein 🔍</h2>
+        <p id="search-subheading" style="color:var(--text-muted); font-size:13px; margin-bottom:20px;">Apni shop ke liye best local talent hire karein.</p>
+        
+        <div class="search-container">
+            <div class="search-input-wrapper autocomplete-wrapper">
+                <span class="search-icon-inside">💼</span>
+                <input type="text" id="searchSkill" class="search-modern" placeholder="Hunar (e.g. Sales, Mistri)" autocomplete="off">
+                <div id="searchSkill-list" class="autocomplete-list" style="top: 100%;"></div>
+            </div>
+        </div>
+        <div class="search-container" id="budget-container">
+            <div class="search-input-wrapper">
+                <span class="search-icon-inside">💰</span>
+                <input type="number" id="searchBudget" class="search-modern" placeholder="Max Salary (₹)">
+            </div>
+        </div>
+        <button class="btn-main" onclick="performSearch()" style="width:100%; border-radius:18px; margin-top: 5px;">Khojein 🚀</button>
+        <div id="search-results" style="margin-top: 20px;"></div>
+    </div>
+
+    <div id="screen-profile" class="nav-screen animate__animated animate__fadeIn" style="display:none;">
+        <h2 style="font-weight: 800; margin-top:0; margin-bottom:20px;">Settings ⚙️</h2>
+
+        <div id="availability-section" class="toggle-wrapper" style="display:none;">
+            <div>
+                <b style="font-size:15px; display:block;">Profile Status</b>
+                <small id="status-text" style="color:var(--success);">Aap abhi Available hain</small>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" id="statusToggle" checked onchange="toggleStatus(this)">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="profile-edit-box" id="profile-info-box">
+            <h3 style="margin-top:0; border-bottom:1px solid var(--glass-border); padding-bottom:10px;">Account Info</h3>
+            <p style="color:var(--text-muted); font-size:13px;">Aapka account Pincode: <b id="prof-pin" style="color:#fff;"></b> par registered hai.</p>
+            <button class="btn-main" onclick="openEditProfile()" style="background:var(--primary); margin-top:10px;">EDIT PROFILE ✨</button>
+        </div>
+
+        <div class="profile-edit-box animate__animated animate__fadeInDown" id="profile-edit-form" style="display:none;">
+            <h3 style="margin-top:0; border-bottom:1px solid var(--glass-border); padding-bottom:10px; color:var(--primary);">Update Details ⚙️</h3>
+            
+            <div id="edit-dynamic-fields"></div>
+
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <button onclick="cancelEdit()" style="flex:1; padding:12px; border-radius:12px; border:1px solid var(--danger); background:transparent; color:#fca5a5; font-weight:bold; cursor:pointer;">Cancel</button>
+                <button onclick="saveProfile()" style="flex:1; padding:12px; border-radius:12px; border:none; background:var(--success); color:#fff; font-weight:bold; cursor:pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);">Save ✔</button>
+            </div>
+        </div>
+
+        <button onclick="logout()" style="width:100%; padding:15px; border-radius:15px; border:1px solid var(--danger); background:rgba(239, 68, 68, 0.1); color:#fca5a5; font-weight:bold; cursor:pointer; transition:0.2s;">Logout Account 🚪</button>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active" id="nav-btn-home" onclick="switchNav('home')">
+            <span class="nav-icon">🏠</span><span>Home</span>
+        </div>
+        <div class="nav-item" id="nav-btn-search" onclick="switchNav('search')" style="display:none;">
+            <span class="nav-icon">🔍</span><span>Search</span>
+        </div>
+        <div class="nav-item" id="nav-btn-profile" onclick="switchNav('profile')">
+            <span class="nav-icon">👤</span><span>Profile</span>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="admin-view" style="display: none; padding-bottom: 50px;">
+    <div class="admin-header animate__animated animate__fadeInDown">
+        <h2 style="margin: 0; color: #fff; font-weight: 800;">👑 Boss Control Room</h2>
+        <p style="margin: 5px 0 0 0; color: #fca5a5; font-size: 13px;">App Database Manager</p>
+    </div>
+
+    <div class="admin-stat-box animate__animated animate__fadeInUp">
+        <div class="stat-card">
+            <h3 id="adminTotalShops">0</h3>
+            <p>Employers</p>
+        </div>
+        <div class="stat-card">
+            <h3 id="adminTotalStaff">0</h3>
+            <p>Staff (Seekers)</p>
+        </div>
+    </div>
+
+    <div class="tab-box animate__animated animate__fadeIn">
+        <button class="tab-btn active-tab" id="admin-tab-emp" onclick="loadAdminData('employer')">🏢 Shops</button>
+        <button class="tab-btn" id="admin-tab-staff" onclick="loadAdminData('seeker')">👨‍🔧 Staff</button>
+    </div>
+
+    <div id="admin-list-container" style="min-height: 300px;">
+        </div>
+
+    <button onclick="logout()" style="width:100%; padding:15px; border-radius:15px; border:1px solid #aaa; background:transparent; color:#fff; font-weight:bold; cursor:pointer; margin-top: 20px;">Exit Admin Panel 🚪</button>
+</div>
+
+<div id="vipDynamicModal" class="vip-modal-overlay animate__animated">
+    <div class="vip-resume-card">
+        <div class="certified-badge">✔ VERIFIED</div>
+        
+        <div style="text-align:center; margin-bottom: 20px;">
+            <div id="vipDynamicIcon" style="width:75px; height:75px; margin:0 auto 10px; background:#222; border:2px solid #d4af37; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:35px; box-shadow: 0 0 15px rgba(212,175,55,0.3);">👤</div>
+            <h2 id="vipDynamicName" style="color:#fff; margin:0; font-size:24px; font-weight:800;">Name</h2>
+            <h4 id="vipDynamicSubtitle" class="gold-text" style="margin:5px 0 0 0; font-size:15px; text-transform:uppercase; letter-spacing:1px;">Role</h4>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05); padding:18px; border-radius:15px; margin-bottom:25px; border: 1px solid rgba(212,175,55,0.1);">
+            <div id="vipRow1" style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:8px;">
+                <span id="vipLabel1" style="color:#aaa; font-size:13px;">Label 1</span>
+                <span id="vipVal1" style="color:#fff; font-weight:bold; font-size:13px; text-align:right; max-width:60%;">Val 1</span>
+            </div>
+            <div id="vipRow2" style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:8px;">
+                <span id="vipLabel2" style="color:#aaa; font-size:13px;">Label 2</span>
+                <span id="vipVal2" style="color:#fff; font-weight:bold; font-size:13px; text-align:right; max-width:60%;">Val 2</span>
+            </div>
+            <div id="vipRow3" style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:8px;">
+                <span id="vipLabel3" style="color:#aaa; font-size:13px;">Label 3</span>
+                <span id="vipVal3" style="color:#fff; font-weight:bold; font-size:13px; text-align:right; max-width:60%;">Val 3</span>
+            </div>
+            <div id="vipRow4" style="display:flex; justify-content:space-between; margin-top:5px;">
+                <span id="vipLabel4" style="color:#aaa; font-size:14px;">Label 4</span>
+                <span id="vipVal4" class="gold-text" style="font-weight:900; font-size:18px;">Val 4</span>
+            </div>
+        </div>
+
+        <button onclick="closeDynamicVip()" style="width:100%; padding:14px; background:transparent; border:1px solid #d4af37; color:#d4af37; font-weight:bold; font-size:15px; border-radius:12px; cursor:pointer; box-shadow: 0 5px 15px rgba(212,175,55,0.2);">Close ❌</button>
+    </div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<script>
+    const firebaseConfig = { 
+        apiKey: "AIzaSyD3hc6Rz1gHZq8c71AHp5NSw8eSZT2-Mik", 
+        authDomain: "savitri-job-bridge.firebaseapp.com", 
+        projectId: "savitri-job-bridge", 
+        storageBucket: "savitri-job-bridge.firebasestorage.app", 
+        messagingSenderId: "721066136910", 
+        appId: "1:721066136910:web:61b5d58b31d8ab481f7a1f" 
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let currentRole = '';
+
+    const commonJobs = [
+        "Dukan Ka Ladka (Shop Helper)", "Counter Ladka (Counter Salesman)", 
+        "Munim (Accountant)", "Bori Uthane Wala (Palledar / Loader)", 
+        "Delivery Boy (Saman Puhanchane Wala)", "Godam Keeper (Store Room Incharge)", 
+        "Cashier (Paisa Lene Wala)", "Rajmistri (Head Mason)", 
+        "Majdoor (Daily Wage Labour)", "Beldar (Helper Labour)", 
+        "Thekedar (Contractor)", "Plumber (Nal Wala / Pipe Mistri)", 
+        "Painter (Rong Mistri)", "Shuttering Wala (Centring ladka)", 
+        "Welder (Loha Jodne Wala)", "Tile/Marble Mistri", 
+        "Bijli Wala (Electrician)", "Motor Mechanic (Gadi Banane Wala)", 
+        "Bike/Scooty Mistri (Two-Wheeler Mechanic)", "Puncture Wala", 
+        "Mobile Banane Wala (Mobile Mistri)", "AC/Fridge Mistri (Technician)", 
+        "RO/Water Purifier Wala", "Driver (Car/Gadi Chalane Wala)", 
+        "Loading Auto/Tata Ace Driver", "Tractor Driver", "E-Rickshaw Driver", 
+        "JCB Driver", "Bawarchi / Halwai (Cook)", "Waiter (Khana Dene Wala)", 
+        "Bartan Dhone Wala (Dishwasher)", "Kaamwali Bai (House Maid)", 
+        "Safai Karamchari (Sweeper)", "Security Guard (Chowkidar)", 
+        "Mali (Gardener)", "Darji (Tailor / Silai Wala)", "Kadhai Wala", 
+        "Beauty Parlour Wali (Beautician)", "Computer Chalane Wala (Data Entry)", 
+        "Clinic Helper (Ward Boy / Compounder)"
+    ];
+
+    function showJobSuggestions(val, listId, inputId) {
+        const listDiv = document.getElementById(listId);
+        listDiv.innerHTML = '';
+        const filtered = commonJobs.filter(job => job.toLowerCase().includes(val.toLowerCase()));
+        
+        if (filtered.length === 0 || !val) {
+            commonJobs.slice(0, 8).forEach(job => addOption(job, listId, inputId));
+            listDiv.style.display = val ? 'none' : 'block';
+        } else {
+            filtered.forEach(job => addOption(job, listId, inputId));
+            listDiv.style.display = 'block';
+        }
+    }
+
+    function addOption(job, listId, inputId) {
+        const listDiv = document.getElementById(listId);
+        const div = document.createElement('div');
+        div.className = 'autocomplete-item';
+        div.innerHTML = job;
+        div.onclick = function() {
+            document.getElementById(inputId).value = job;
+            listDiv.style.display = 'none';
+        };
+        listDiv.appendChild(div);
+    }
+
+    document.addEventListener('click', function(e) {
+        if(!e.target.closest('.autocomplete-wrapper')) {
+            document.querySelectorAll('.autocomplete-list').forEach(l => l.style.display = 'none');
+        }
+    });
+
+    function fireConfetti() {
+        var end = Date.now() + 2 * 1000;
+        var colors = ['#3b82f6', '#10b981', '#fbbf24', '#ffffff'];
+        (function frame() {
+            confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0, y: 0.8 }, colors: colors, zIndex: 10000 });
+            confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1, y: 0.8 }, colors: colors, zIndex: 10000 });
+            if (Date.now() < end) { requestAnimationFrame(frame); }
+        }());
+    }
+
+    function startOnboarding(role) {
+        currentRole = role;
+        const landing = document.getElementById('landing-view');
+        const auth = document.getElementById('auth-view');
+        landing.classList.remove('animate__fadeInDown', 'animate__fadeInLeft');
+        landing.classList.add('animate__fadeOut');
+        setTimeout(() => {
+            landing.style.display = 'none';
+            landing.classList.remove('animate__fadeOut');
+            auth.style.display = 'block';
+            auth.classList.remove('animate__fadeOut');
+            auth.classList.add('animate__animated', 'animate__fadeInRight');
+            document.getElementById('auth-title').innerHTML = role === 'employer' ? '🏢 Employer Onboarding' : '👷 Staff Registration';
+            switchAuthTab('register'); 
+            generateDynamicFields(role);
+        }, 250); 
+    }
+
+    function goBack() {
+        const landing = document.getElementById('landing-view');
+        const auth = document.getElementById('auth-view');
+        auth.classList.remove('animate__fadeInRight');
+        auth.classList.add('animate__fadeOut');
+        setTimeout(() => {
+            auth.style.display = 'none';
+            auth.classList.remove('animate__fadeOut');
+            landing.style.display = 'flex';
+            landing.classList.add('animate__animated', 'animate__fadeInLeft');
+        }, 250);
+    }
+
+    function switchAuthTab(mode) {
+        document.getElementById('tab-register').classList.remove('active-tab');
+        document.getElementById('tab-login').classList.remove('active-tab');
+        if(mode === 'register') {
+            document.getElementById('tab-register').classList.add('active-tab');
+            document.getElementById('register-form').style.display = 'block';
+            document.getElementById('login-form').style.display = 'none';
+        } else {
+            document.getElementById('tab-login').classList.add('active-tab');
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+        }
+    }
+
+    function generateDynamicFields(role) {
+        const container = document.getElementById('dynamic-fields');
+        if(role === 'employer') {
+            // YAHAN NAYA FIELD ADD KIYA HAI "Aapko kaisa staff chahiye?"
+            container.innerHTML = `
+                <div class="input-group"><label>Shop / Business Name</label><input type="text" id="rName" placeholder="e.g. Savitri Electronics"></div>
+                <div class="input-group autocomplete-wrapper">
+                    <label>Aapko kaisa staff chahiye?</label>
+                    <input type="text" id="rHiringRole" placeholder="e.g. Salesman, Helper..." onkeyup="showJobSuggestions(this.value, 'rHiringRole-list', 'rHiringRole')" onfocus="showJobSuggestions(this.value, 'rHiringRole-list', 'rHiringRole')" autocomplete="off">
+                    <div id="rHiringRole-list" class="autocomplete-list"></div>
+                </div>
+                <div class="input-group"><label>Proper Address</label><input type="text" id="rAddress" placeholder="Street, Landmark"></div>
+                <div class="flex-row">
+                    <div class="input-group"><label>Pincode</label><input type="number" id="rPinCode" oninput="fetchCity(this.value, 'rCity')"></div>
+                    <div class="input-group"><label>Saher</label><input type="text" id="rCity" readonly placeholder="..."></div>
+                </div>
+            `;
+        } else {
+            container.innerHTML = `
+                <div class="input-group"><label>Pura Naam (Full Name)</label><input type="text" id="rName" placeholder="Aapka Naam"></div>
+                <div class="input-group autocomplete-wrapper">
+                    <label>Kaunsa Kaam Jaante Hain?</label>
+                    <input type="text" id="rSkill" placeholder="Tap to select job..." onkeyup="showJobSuggestions(this.value, 'rSkill-list', 'rSkill')" onfocus="showJobSuggestions(this.value, 'rSkill-list', 'rSkill')" autocomplete="off">
+                    <div id="rSkill-list" class="autocomplete-list"></div>
+                </div>
+                <div class="flex-row"><div class="input-group"><label>Experience (Years)</label><input type="number" id="rExp" placeholder="0 = Fresher"></div><div class="input-group"><label>Pichla Kaam</label><input type="text" id="rPrevWork" placeholder="Shop Name"></div></div>
+                <div class="flex-row"><div class="input-group"><label>Pincode</label><input type="number" id="rPinCode" oninput="fetchCity(this.value, 'rCity')"></div><div class="input-group"><label>Saher</label><input type="text" id="rCity" readonly placeholder="..."></div></div>
+                <div class="input-group"><label>Expected Salary (₹)</label><input type="number" id="rSalary" placeholder="e.g. 15000"></div>
+            `;
+        }
+    }
+
+    async function fetchCity(pin, targetId) {
+        if(pin.length === 6) {
+            try {
+                const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
+                const data = await res.json();
+                if(data[0].Status === "Success") { 
+                    document.getElementById(targetId).value = `${data[0].PostOffice[0].Name}, ${data[0].PostOffice[0].District}`; 
+                }
+            } catch(e) {}
+        }
+    }
+
+    async function processRegister() {
+        const phone = document.getElementById('rPhone').value;
+        const pin = document.getElementById('rPin').value;
+        const name = document.getElementById('rName').value;
+        const pincode = document.getElementById('rPinCode').value;
+
+        if(!phone || !pin || !name || !pincode) return Swal.fire("Error", "Kripya sabhi details bharein!", "error");
+        if(phone.length !== 10) return Swal.fire("Error", "Mobile number 10 digit ka hona chahiye!", "error");
+        if(pin.length !== 4) return Swal.fire("Error", "PIN 4-digit ka hona chahiye!", "error");
+
+        if(currentRole === 'seeker') {
+            const typedSkill = document.getElementById('rSkill').value;
+            if(!commonJobs.includes(typedSkill)) {
+                return Swal.fire("Galat Kaam", "Kripya aapna kaam niche aayi hui List (Popup) me se hi chunein.", "warning");
+            }
+        } else {
+            // Employer ke liye bhi validation
+            const typedHiringRole = document.getElementById('rHiringRole').value;
+            if(!typedHiringRole) return Swal.fire("Error", "Kripya batayein aapko kaisa staff chahiye.", "warning");
+        }
+
+        Swal.fire({ title: 'Registering...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+
+        const checkSnap = await db.collection("JobSeekers").where("phone", "==", phone).get();
+        if(!checkSnap.empty) return Swal.fire("Account Exists", "Yeh number pehle se registered hai.", "warning");
+
+        const uid = (currentRole === 'seeker' ? "ID-" : "SHOP-") + Math.floor(1000 + Math.random() * 9000);
+        let data = { uid: uid, phone: phone, pinAuth: pin, type: currentRole, name: name, pincode: pincode, city: document.getElementById('rCity').value, createdAt: new Date(), isVerified: false };
+
+        if(currentRole === 'seeker') {
+            data.skill = document.getElementById('rSkill').value; 
+            data.exp = document.getElementById('rExp').value || "0";
+            data.prevWork = document.getElementById('rPrevWork').value || "None";
+            data.salary = Number(document.getElementById('rSalary').value);
+            data.rating = 5.0; data.status = "Available"; data.dealStatus = "None";
+        } else {
+            data.address = document.getElementById('rAddress').value;
+            data.hiringRole = document.getElementById('rHiringRole').value; // NAYA DATA SAVE HOGA
+        }
+
+        await db.collection("JobSeekers").add(data);
+        localStorage.setItem("rozgaarPhone", phone); localStorage.setItem("rozgaarUID", uid); localStorage.setItem("rozgaarType", currentRole);
+        
+        fireConfetti();
+        Swal.fire("Success!", "Account ban gaya hai!", "success").then(() => { goToDashboard(); });
+    }
+
+    async function processLogin() {
+        const phone = document.getElementById('lPhone').value;
+        const pin = document.getElementById('lPin').value;
+        if(!phone || !pin) return Swal.fire("Error", "Number aur PIN dono bharein!", "error");
+
+        // PHASE 7: SECRET ADMIN LOGIN BYPASS
+        if(phone === "9999999999" && pin === "9999") {
+            Swal.fire("Boss Login", "Admin Panel Unlocked 👑", "success").then(() => {
+                document.getElementById('auth-view').style.display = 'none';
+                document.getElementById('landing-view').style.display = 'none';
+                document.getElementById('admin-view').style.display = 'block';
+                loadAdminData('employer'); 
+            });
+            return; 
+        }
+
+        Swal.fire({ title: 'Logging in...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+
+        const snap = await db.collection("JobSeekers").where("phone", "==", phone).where("pinAuth", "==", pin).get();
+        if(snap.empty) return Swal.fire("Login Failed", "Details galat hain.", "error");
+
+        const user = snap.docs[0].data();
+        if(user.type !== currentRole) return Swal.fire("Wrong Portal", `Aap '${user.type}' hain. Sahi option chunein.`, "warning");
+
+        localStorage.setItem("rozgaarPhone", user.phone); localStorage.setItem("rozgaarUID", user.uid); localStorage.setItem("rozgaarType", user.type);
+        
+        fireConfetti();
+        Swal.fire("Welcome Back!", `Hello, ${user.name}`, "success").then(() => { goToDashboard(); });
+    }
+
+    async function forgotPin() {
+        const { value: recPhone } = await Swal.fire({
+            title: 'Account Recovery',
+            input: 'tel',
+            inputLabel: 'Apna Registered Mobile Number daalein',
+            inputPlaceholder: '10 Digit Number',
+            showCancelButton: true,
+            confirmButtonText: 'Next',
+            inputValidator: (value) => {
+                if (!value || value.length !== 10) return 'Sahi 10-digit number daalein!'
+            }
+        });
+
+        if (recPhone) {
+            const { value: recPincode } = await Swal.fire({
+                title: 'Security Check',
+                input: 'number',
+                inputLabel: 'Aapka Area Pincode kya hai? (Jo account banate waqt dala tha)',
+                inputPlaceholder: 'e.g. 274204',
+                showCancelButton: true,
+                confirmButtonText: 'Verify'
+            });
+
+            if (recPincode) {
+                Swal.fire({ title: 'Checking...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+                const snap = await db.collection("JobSeekers").where("phone", "==", recPhone).where("pincode", "==", recPincode).get();
+                
+                if (snap.empty) {
+                    Swal.fire("Verification Failed", "Number ya Pincode match nahi hua. Kripya sahi details daalein.", "error");
+                } else {
+                    const docId = snap.docs[0].id;
+                    const { value: newPin } = await Swal.fire({
+                        title: 'Naya PIN Banayein',
+                        input: 'password',
+                        inputLabel: 'Apna naya 4-Digit PIN set karein',
+                        inputPlaceholder: '****',
+                        showCancelButton: true,
+                        confirmButtonText: 'Set PIN',
+                        inputValidator: (value) => {
+                            if (!value || value.length !== 4) return 'PIN theek 4-digit ka hona chahiye!'
+                        }
+                    });
+
+                    if (newPin) {
+                        Swal.fire({ title: 'Updating...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+                        await db.collection("JobSeekers").doc(docId).update({ pinAuth: newPin });
+                        Swal.fire("Success!", "Aapka naya PIN set ho gaya hai. Ab aap login kar sakte hain.", "success");
+                    }
+                }
+            }
+        }
+    }
+
+    function switchNav(screenName) {
+        document.querySelectorAll('.nav-screen').forEach(s => s.style.display = 'none');
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        document.getElementById(`screen-${screenName}`).style.display = 'block';
+        document.getElementById(`nav-btn-${screenName}`).classList.add('active');
+        if(screenName === 'home') loadHomeData();
+    }
+    async function goToDashboard() {
+        const uType = localStorage.getItem("rozgaarType");
+        const uPhone = localStorage.getItem("rozgaarPhone");
+
+        const snap = await db.collection("JobSeekers").where("phone", "==", uPhone).get();
+        if(snap.empty) {
+            localStorage.clear();
+            location.reload();
+            return;
+        }
+
+        const userData = snap.docs[0].data();
+
+        document.getElementById('auth-view').style.display = 'none';
+        document.getElementById('landing-view').style.display = 'none';
+        document.getElementById('dash-view').style.display = 'block';
+
+        document.getElementById('dash-greeting').innerText = `Hi, ${userData.name.split(' ')[0]} 👋`;
+        document.getElementById('prof-pin').innerText = userData.pincode;
+
+        document.getElementById('nav-btn-search').style.display = 'flex'; 
+
+        if(uType === 'employer') {
+            document.getElementById('role-badge').innerText = "SHOP OWNER";
+            document.getElementById('home-title').innerText = "Aapki Hiring Requests 📊";
+            document.getElementById('search-heading').innerText = "Staff Dhoondhein 🔍";
+            document.getElementById('search-subheading').innerText = "Apni shop ke liye best talent hire karein.";
+            document.getElementById('searchSkill').placeholder = "Hunar (e.g. Sales, Mistri)";
+            document.getElementById('searchSkill').setAttribute('onkeyup', "showJobSuggestions(this.value, 'searchSkill-list', 'searchSkill')");
+            document.getElementById('searchSkill').setAttribute('onfocus', "showJobSuggestions(this.value, 'searchSkill-list', 'searchSkill')");
+            document.getElementById('budget-container').style.display = 'block';
+        } else {
+            document.getElementById('role-badge').innerText = "STAFF MEMBER";
+            document.getElementById('role-badge').style.background = "var(--success)";
+            document.getElementById('availability-section').style.display = 'flex'; 
+            document.getElementById('home-title').innerText = "Aapke Job Offers 💼";
+            document.getElementById('search-heading').innerText = "Job Dhoondhein 🔍";
+            document.getElementById('search-subheading').innerText = "Apne area ki dukaano mein direct apply karein.";
+            document.getElementById('searchSkill').placeholder = "City ya Pincode (e.g. Deoria)";
+            document.getElementById('searchSkill').removeAttribute('onkeyup');
+            document.getElementById('searchSkill').removeAttribute('onfocus');
+            document.getElementById('budget-container').style.display = 'none'; 
+        }
+
+        switchNav('home');
+    }
+
+    async function loadHomeData() {
+        const uType = localStorage.getItem("rozgaarType");
+        const uid = localStorage.getItem("rozgaarUID");
+        const phone = localStorage.getItem("rozgaarPhone");
+        const resDiv = document.getElementById('home-content');
+        resDiv.innerHTML = "<p style='text-align:center; color:var(--text-muted);'>Loading data...</p>";
+
+        if(uType === 'employer') {
+            const snap = await db.collection("JobSeekers").where("hiredByUID", "==", uid).get();
+            let h = "";
+            snap.forEach(doc => {
+                const d = doc.data();
+                const docId = doc.id;
+                let badgeClass = d.dealStatus === 'Accepted' ? 'badge-accepted' : 'badge-pending';
+                let encodedData = encodeURIComponent(JSON.stringify(d)); 
+
+                let actionHTML = '';
+                if(d.dealStatus === 'Accepted') {
+                    actionHTML = `
+                        <div style="display:flex; gap:10px; margin-top:15px;">
+                            <a href="tel:${d.phone}" style="flex:1; text-align:center; background:var(--primary); color:#fff; text-decoration:none; padding:10px; border-radius:12px; font-weight:bold; box-shadow:0 4px 10px rgba(59,130,246,0.3);">Call Now 📞</a>
+                            <a href="https://wa.me/91${d.phone}" target="_blank" style="flex:1; text-align:center; background:#25D366; color:#fff; text-decoration:none; padding:10px; border-radius:12px; font-weight:bold; box-shadow:0 4px 10px rgba(37,211,102,0.3);">WhatsApp 💬</a>
+                        </div>
+                        <button onclick="cancelRequest('${docId}')" style="width:100%; margin-top:12px; padding:12px; background:rgba(239, 68, 68, 0.1); border:1px solid var(--danger); color:#fca5a5; border-radius:12px; font-weight:bold; cursor:pointer; transition:0.2s;">Cancel Job ❌</button>
+                    `;
+                } else if(d.dealStatus === 'Pending' && d.initiatedBy === 'seeker') {
+                    actionHTML = `
+                        <div class="action-grid">
+                            <button class="btn-decline" onclick="updateOffer('${docId}', 'Rejected')">Decline ❌</button>
+                            <button class="btn-accept" onclick="updateOffer('${docId}', 'Accepted')">Accept ✅</button>
+                        </div>`;
+                } else {
+                    actionHTML = `
+                        <p style="font-size:12px; color:var(--text-muted); margin-top:10px; font-weight:bold;">⏳ Waiting for staff to reply...</p>
+                        <button class="btn-decline" onclick="cancelRequest('${docId}')" style="width:100%; margin-top:10px;">Cancel Request ❌</button>
+                    `;
+                }
+
+                h += `<div class="offer-card" style="padding:15px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span class="status-badge ${badgeClass}">${d.dealStatus}</span>
+                            <button onclick="openDynamicVip('${encodedData}', 'seeker')" style="background:transparent; border:none; font-size:12px; color:var(--primary); cursor:pointer; font-weight:bold;">👁️ View Profile</button>
+                        </div>
+                        <h3 style="margin:5px 0 5px 0; font-size:16px;">${d.name}</h3>
+                        <p style="margin:0; font-size:12px; color:var(--primary); font-weight:bold;">${d.skill}</p>
+                        <p style="margin:5px 0 0 0; font-size:12px; color:var(--text-muted);">₹${d.salary}/mo</p>
+                        ${actionHTML}
+                      </div>`;
+            });
+            resDiv.innerHTML = h || "<p style='color:var(--text-muted); text-align:center;'>Aapne abhi tak kisi ko offer nahi bheja hai aur na hi koi application aayi hai.</p>";
+        } else {
+            const snap = await db.collection("JobSeekers").where("phone", "==", phone).get();
+            if(!snap.empty) {
+                const d = snap.docs[0].data();
+                const docId = snap.docs[0].id;
+                
+                document.getElementById('statusToggle').checked = (d.status === "Available");
+                document.getElementById('status-text').innerText = (d.status === "Available") ? "Aap abhi Available hain" : "Aap abhi Busy hain";
+                document.getElementById('status-text').style.color = (d.status === "Available") ? "var(--success)" : "var(--danger)";
+
+                if(d.hiredByUID) {
+                    let badgeClass = d.dealStatus === 'Accepted' ? 'badge-accepted' : 'badge-pending';
+                    let empEncodedData = encodeURIComponent(JSON.stringify({
+                        name: d.hiredByName, hiredByAddress: d.hiredByAddress,
+                        city: "Verified Locality", pincode: "Verified", phone: d.hiredByPhone
+                    }));
+
+                    let actionHTML = '';
+                    if(d.dealStatus === 'Accepted') {
+                        actionHTML = `
+                            <div style="display:flex; gap:10px; margin-top:15px;">
+                                <a href="tel:${d.hiredByPhone}" style="flex:1; text-align:center; background:var(--primary); color:#fff; text-decoration:none; padding:12px; border-radius:12px; font-weight:bold; box-shadow:0 4px 10px rgba(59,130,246,0.3);">Call 📞</a>
+                                <a href="https://wa.me/91${d.hiredByPhone}" target="_blank" style="flex:1; text-align:center; background:#25D366; color:#fff; text-decoration:none; padding:12px; border-radius:12px; font-weight:bold; box-shadow:0 4px 10px rgba(37,211,102,0.3);">WhatsApp 💬</a>
+                            </div>
+                            <button onclick="cancelRequest('${docId}')" style="width:100%; margin-top:12px; padding:12px; background:rgba(239, 68, 68, 0.1); border:1px solid var(--danger); color:#fca5a5; border-radius:12px; font-weight:bold; cursor:pointer; transition:0.2s;">Cancel / End Job ❌</button>
+                        `;
+                    } else if(d.dealStatus === 'Pending' && d.initiatedBy === 'employer') {
+                        actionHTML = `
+                            <div class="action-grid">
+                                <button class="btn-decline" onclick="updateOffer('${docId}', 'Rejected')">Decline ❌</button>
+                                <button class="btn-accept" onclick="updateOffer('${docId}', 'Accepted')">Accept ✅</button>
+                            </div>`;
+                    } else if(d.dealStatus === 'Pending' && d.initiatedBy === 'seeker') {
+                        actionHTML = `
+                            <p style="font-size:12px; color:var(--text-muted); margin-top:10px; font-weight:bold;">⏳ Waiting for shop owner to reply...</p>
+                            <button class="btn-decline" onclick="cancelRequest('${docId}')" style="width:100%; margin-top:10px;">Withdraw Application ❌</button>
+                        `;
+                    } else {
+                        actionHTML = `<p style="color:var(--danger); font-size:12px; font-weight:bold; margin-top:10px;">Yeh offer reject ho chuka hai.</p>`;
+                    }
+
+                    let h = `<div class="offer-card">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <span class="status-badge ${badgeClass}">${d.dealStatus}</span>
+                                    <button onclick="openDynamicVip('${empEncodedData}', 'employer')" style="background:transparent; border:none; font-size:12px; color:var(--primary); cursor:pointer; font-weight:bold;">👁️ View Shop</button>
+                                </div>
+                                <h3 style="margin:0 0 5px 0; font-size:18px;">${d.hiredByName}</h3>
+                                <p style="font-size:12px; color:var(--text-muted); margin:0;">📍 ${d.hiredByAddress}</p>
+                                ${actionHTML}
+                             </div>`;
+                    resDiv.innerHTML = h;
+                } else {
+                    resDiv.innerHTML = "<p style='text-align:center; color:var(--text-muted); margin-top:40px;'>Abhi koi naya offer nahi hai.</p>";
+                }
+            }
+        }
+    }
+
+    async function performSearch() {
+        const uType = localStorage.getItem("rozgaarType");
+        const searchInputText = document.getElementById('searchSkill').value.trim().toLowerCase();
+        const resDiv = document.getElementById('search-results');
+
+        if(!searchInputText) return Swal.fire("Oops!", "Search box khali hai.", "warning");
+        resDiv.innerHTML = "<p style='color:var(--text-muted); text-align:center; font-weight:bold;'>Data dhundh rahe hain... ⏳</p>";
+
+        try {
+            let h = "";
+            if (uType === 'employer') {
+                const maxBudget = Number(document.getElementById('searchBudget').value) || 999999;
+                const snap = await db.collection("JobSeekers").where("type", "==", "seeker").get();
+                
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    if(d.skill && d.skill.toLowerCase().includes(searchInputText) && d.salary <= maxBudget && d.status === "Available") {
+                        let encodedData = encodeURIComponent(JSON.stringify(d));
+                        h += `<div class="offer-card animate__animated animate__fadeInUp" style="padding:18px;">
+                                <div style="display:flex; justify-content:space-between; align-items:start;">
+                                    <div>
+                                        <h3 style="margin:0 0 5px 0;">${d.name} ${d.isVerified ? '<span style="color:var(--primary);font-size:12px;">✔</span>' : ''}</h3>
+                                        <p style="font-size:12px; color:var(--text-muted); margin:0;">${d.exp} Yrs Exp | 📍 ${d.city.split(',')[0]}</p>
+                                    </div>
+                                    <span style="color:var(--success); font-weight:900; font-size:18px;">₹${d.salary}</span>
+                                </div>
+                                <div style="display:flex; gap:10px; align-items:center; margin-top:18px;">
+                                    <button onclick="openDynamicVip('${encodedData}', 'seeker')" style="flex:1; background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); padding:10px; border-radius:10px; font-weight:bold; cursor:pointer; transition:0.2s;">👁️ View</button>
+                                    <button onclick="sendHireRequest('${doc.id}', '${d.name}', '${d.phone}', '${d.salary}')" style="flex:2; background:var(--primary); color:#fff; border:none; padding:10px; border-radius:10px; font-weight:bold; cursor:pointer; box-shadow:0 4px 10px rgba(59,130,246,0.3);">Hire Now 🚀</button>
+                                </div>
+                              </div>`;
+                    }
+                });
+            } else {
+                const snap = await db.collection("JobSeekers").where("type", "==", "employer").get();
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    if(d.city.toLowerCase().includes(searchInputText) || d.pincode.includes(searchInputText)) {
+                        let empEncodedData = encodeURIComponent(JSON.stringify({
+                            name: d.name, hiredByAddress: d.address, city: d.city, pincode: d.pincode, phone: d.phone
+                        }));
+                        // NAYA LOGIC: Yahan d.hiringRole dikhega (Jaise: Hiring Salesman)
+                        let jobRoleText = d.hiringRole ? `💼 Hiring: ${d.hiringRole}` : `💼 Staff Chahiye`;
+                        
+                        h += `<div class="offer-card animate__animated animate__fadeInUp" style="padding:18px;">
+                                <div style="display:flex; justify-content:space-between; align-items:start;">
+                                    <div>
+                                        <h3 style="margin:0 0 5px 0;">🏢 ${d.name} ${d.isVerified ? '<span style="color:var(--success);font-size:12px;">✔</span>' : ''}</h3>
+                                        <p style="color:var(--primary); font-size:13px; font-weight:bold; margin:0 0 5px 0;">${jobRoleText}</p>
+                                        <p style="font-size:12px; color:var(--text-muted); margin:0;">📍 ${d.address}, ${d.city.split(',')[0]}</p>
+                                    </div>
+                                </div>
+                                <div style="display:flex; gap:10px; align-items:center; margin-top:18px;">
+                                    <button onclick="openDynamicVip('${empEncodedData}', 'employer')" style="flex:1; background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); padding:10px; border-radius:10px; font-weight:bold; cursor:pointer; transition:0.2s;">👁️ View Shop</button>
+                                    <button onclick="applyForJob('${d.uid}', '${d.name}', '${d.address}', '${d.phone}')" style="flex:2; background:var(--success); color:#fff; border:none; padding:10px; border-radius:10px; font-weight:bold; cursor:pointer; box-shadow:0 4px 10px rgba(16,185,129,0.3);">Apply Now 📝</button>
+                                </div>
+                              </div>`;
+                    }
+                });
+            }
+            resDiv.innerHTML = h || `<p style='text-align:center; color:var(--danger); font-weight:bold; margin-top:20px;'>Data nahi mila.</p>`;
+        } catch(error) {
+            resDiv.innerHTML = "<p style='text-align:center; color:var(--danger);'>Network error.</p>";
+        }
+    }
+
+    async function applyForJob(shopUid, shopName, shopAddress, shopPhone) {
+        const uPhone = localStorage.getItem("rozgaarPhone");
+        const snap = await db.collection("JobSeekers").where("phone", "==", uPhone).get();
+        const staffData = snap.docs[0].data();
+        const staffDocId = snap.docs[0].id;
+
+        if (staffData.hiredByUID) {
+            return Swal.fire("Hold On! ✋", "Aapne pehle se ek job ke liye request bheji hui hai. Dusri jagah apply karne ke liye pehli request cancel karein.", "warning");
+        }
+
+        Swal.fire({
+            title: `Apply at ${shopName}?`,
+            text: "Dukaandaar ko aapki profile aur request bhej di jayegi.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#10b981',
+            confirmButtonText: 'Yes, Apply Now! 🚀'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                Swal.fire({ title: 'Sending Application...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+                
+                await db.collection("JobSeekers").doc(staffDocId).update({
+                    hiredByUID: shopUid, 
+                    hiredByName: shopName, 
+                    hiredByAddress: shopAddress,
+                    hiredByPhone: shopPhone, 
+                    dealStatus: "Pending", 
+                    status: "Busy",
+                    initiatedBy: "seeker"
+                });
+                
+                fireConfetti();
+                Swal.fire("Superb! 🎉", "Aapka aavedan (Application) bhej diya gaya hai.", "success");
+                loadHomeData(); 
+            }
+        });
+    }
+    // ==========================================
+    // VIP BLACK & GOLD RESUME LOGIC
+    // ==========================================
+    function openDynamicVip(encodedData, profileType) {
+        const d = JSON.parse(decodeURIComponent(encodedData));
+        
+        if(profileType === 'employer') {
+            document.getElementById('vipDynamicIcon').innerText = '🏢';
+            document.getElementById('vipDynamicName').innerText = d.hiredByName || d.name;
+            // Yahan modal mein bhi dikhega ki dukaandaar ko kaun chahiye
+            document.getElementById('vipDynamicSubtitle').innerText = d.hiringRole ? `Hiring: ${d.hiringRole}` : 'Verified Business';
+            document.getElementById('vipLabel1').innerText = '📍 Full Address';
+            document.getElementById('vipVal1').innerText = d.hiredByAddress || d.address || 'Address not found';
+            document.getElementById('vipLabel2').innerText = '🏙️ City / Pincode';
+            document.getElementById('vipVal2').innerText = (d.city || 'City') + " (" + (d.pincode || 'Verified') + ")";
+            document.getElementById('vipRow3').style.display = 'none';
+            document.getElementById('vipRow4').style.display = 'none';
+        } else {
+            document.getElementById('vipDynamicIcon').innerText = '👨‍🔧';
+            document.getElementById('vipDynamicName').innerText = d.name;
+            document.getElementById('vipDynamicSubtitle').innerText = d.skill ? d.skill.split(' (')[0] : 'Worker';
+            document.getElementById('vipRow1').style.display = 'flex';
+            document.getElementById('vipLabel1').innerText = '💼 Experience';
+            document.getElementById('vipVal1').innerText = d.exp + ' Years';
+            document.getElementById('vipRow2').style.display = 'flex';
+            document.getElementById('vipLabel2').innerText = '🏢 Past Work';
+            document.getElementById('vipVal2').innerText = d.prevWork || 'Fresher';
+            document.getElementById('vipRow3').style.display = 'flex';
+            document.getElementById('vipLabel3').innerText = '📍 Location';
+            document.getElementById('vipVal3').innerText = d.city;
+            document.getElementById('vipRow4').style.display = 'flex';
+            document.getElementById('vipLabel4').innerText = '💰 Expected Salary';
+            document.getElementById('vipVal4').innerText = '₹' + d.salary;
+        }
+
+        const modal = document.getElementById('vipDynamicModal');
+        modal.style.display = 'flex';
+        modal.classList.add('animate__fadeIn');
+        modal.classList.remove('animate__fadeOut');
+    }
+
+    function closeDynamicVip() {
+        const modal = document.getElementById('vipDynamicModal');
+        modal.classList.add('animate__fadeOut');
+        modal.classList.remove('animate__fadeIn');
+        setTimeout(() => { modal.style.display = 'none'; }, 300);
+    }
+
+    async function sendHireRequest(staffId, staffName, staffPhone, expectedSalary) {
+        Swal.fire({
+            title: `Hire ${staffName}?`, 
+            html: `<p style="font-size:13px; color:var(--text-muted);">Request bhejne ke baad aapka WhatsApp khulega jisse aap direct unhe message bhej payenge.</p>`,
+            icon: 'info', 
+            showCancelButton: true, 
+            confirmButtonText: 'WhatsApp Bhejein 💬',
+            cancelButtonText: 'Cancel',
+            customClass: { confirmButton: 'wa-btn', popup: 'animate__animated animate__zoomIn' }
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                Swal.fire({ title: 'Connecting to WhatsApp...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+
+                const empPhone = localStorage.getItem("rozgaarPhone");
+                const empSnap = await db.collection("JobSeekers").where("phone", "==", empPhone).get();
+                const empData = empSnap.docs[0].data();
+
+                await db.collection("JobSeekers").doc(staffId).update({
+                    hiredByUID: empData.uid, hiredByName: empData.name, hiredByAddress: empData.address,
+                    hiredByPhone: empData.phone, dealStatus: "Pending", status: "Busy",
+                    initiatedBy: "employer" 
+                });
+
+                const message = `Namaste ${staffName} ji, \n\nMain *${empData.name}* se bol raha hoon. *RozgaarIn* app par mujhe aapki profile mili.\n\nKya aap hamaare yahan kaam karna chahenge? \nSalary: ₹${expectedSalary}/mo.\n\nKripya reply karein.`;
+                const waUrl = `https://wa.me/91${staffPhone}?text=${encodeURIComponent(message)}`;
+
+                setTimeout(() => {
+                    Swal.close();
+                    fireConfetti();
+                    window.open(waUrl, '_blank');
+                    loadHomeData();
+                }, 1000);
+            }
+        });
+    }
+
+    async function updateOffer(docId, status) {
+        let updateData = { dealStatus: status };
+        if(status === 'Rejected') {
+            updateData.status = "Available"; 
+            updateData.dealStatus = "None";
+            updateData.hiredByUID = firebase.firestore.FieldValue.delete(); 
+            updateData.hiredByName = firebase.firestore.FieldValue.delete();
+            updateData.hiredByAddress = firebase.firestore.FieldValue.delete();
+            updateData.hiredByPhone = firebase.firestore.FieldValue.delete();
+            updateData.initiatedBy = firebase.firestore.FieldValue.delete();
+        }
+        
+        await db.collection("JobSeekers").doc(docId).update(updateData);
+        Swal.fire(status === 'Accepted' ? "Congratulations! 🎉" : "Offer Rejected", status === 'Accepted' ? "Aap ab call kar sakte hain." : "Aap wapas Available mark ho gaye hain.", "success");
+        loadHomeData();
+    }
+
+    async function cancelRequest(docId) {
+        Swal.fire({
+            title: 'Action Confirm Karein',
+            text: "Kya aap sach mein isey end/cancel karna chahte hain? Aap wapas 'Available' mark ho jayenge.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            confirmButtonText: 'Yes, Cancel ❌'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                Swal.fire({ title: 'Processing...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+                
+                await db.collection("JobSeekers").doc(docId).update({
+                    dealStatus: "None",
+                    status: "Available",
+                    hiredByUID: firebase.firestore.FieldValue.delete(),
+                    hiredByName: firebase.firestore.FieldValue.delete(),
+                    hiredByAddress: firebase.firestore.FieldValue.delete(),
+                    hiredByPhone: firebase.firestore.FieldValue.delete(),
+                    initiatedBy: firebase.firestore.FieldValue.delete()
+                });
+                
+                Swal.fire('Done!', 'Job/Request cancel ho gayi hai.', 'success');
+                loadHomeData();
+            }
+        });
+    }
+
+    async function toggleStatus(checkbox) {
+        const phone = localStorage.getItem("rozgaarPhone");
+        const snap = await db.collection("JobSeekers").where("phone", "==", phone).get();
+        if(!snap.empty) {
+            const docId = snap.docs[0].id;
+            const newStatus = checkbox.checked ? "Available" : "Busy";
+            await db.collection("JobSeekers").doc(docId).update({ status: newStatus });
+            
+            document.getElementById('status-text').innerText = newStatus === "Available" ? "Aap abhi Available hain" : "Aap abhi Busy hain";
+            document.getElementById('status-text').style.color = newStatus === "Available" ? "var(--success)" : "var(--danger)";
+        }
+    }
+
+    async function openEditProfile() {
+        document.getElementById('profile-info-box').style.display = 'none';
+        document.getElementById('profile-edit-form').style.display = 'block';
+        
+        const uPhone = localStorage.getItem("rozgaarPhone");
+        const uType = localStorage.getItem("rozgaarType");
+        
+        Swal.fire({ title: 'Loading Profile...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+        
+        const snap = await db.collection("JobSeekers").where("phone", "==", uPhone).get();
+        Swal.close();
+        
+        if(snap.empty) return;
+        const userData = snap.docs[0].data();
+        const container = document.getElementById('edit-dynamic-fields');
+        
+        if(uType === 'employer') {
+            // NAYA LOGIC: Dukaandaar ab apna "Kaisa Staff Chahiye" edit kar sakta hai
+            container.innerHTML = `
+                <div class="input-group"><label>Shop Name</label><input type="text" id="editName" value="${userData.name}"></div>
+                <div class="input-group autocomplete-wrapper">
+                    <label>Aapko kaisa staff chahiye?</label>
+                    <input type="text" id="editHiringRole" value="${userData.hiringRole || ''}" onkeyup="showJobSuggestions(this.value, 'editHiringRole-list', 'editHiringRole')" onfocus="showJobSuggestions(this.value, 'editHiringRole-list', 'editHiringRole')" autocomplete="off">
+                    <div id="editHiringRole-list" class="autocomplete-list"></div>
+                </div>
+                <div class="input-group"><label>Address</label><input type="text" id="editAddress" value="${userData.address}"></div>
+                <div class="flex-row">
+                    <div class="input-group"><label>Pincode</label><input type="number" id="editPin" value="${userData.pincode}" oninput="fetchCity(this.value, 'editCity')"></div>
+                    <div class="input-group"><label>City</label><input type="text" id="editCity" value="${userData.city}" readonly></div>
+                </div>
+            `;
+        } else {
+            container.innerHTML = `
+                <div class="input-group"><label>Full Name</label><input type="text" id="editName" value="${userData.name}"></div>
+                <div class="input-group autocomplete-wrapper">
+                    <label>Skill</label>
+                    <input type="text" id="editSkill" value="${userData.skill}" onkeyup="showJobSuggestions(this.value, 'editSkill-list', 'editSkill')" onfocus="showJobSuggestions(this.value, 'editSkill-list', 'editSkill')" autocomplete="off">
+                    <div id="editSkill-list" class="autocomplete-list"></div>
+                </div>
+                <div class="flex-row">
+                    <div class="input-group"><label>Experience (Yrs)</label><input type="number" id="editExp" value="${userData.exp}"></div>
+                    <div class="input-group"><label>Salary (₹)</label><input type="number" id="editSalary" value="${userData.salary}"></div>
+                </div>
+                <div class="flex-row">
+                    <div class="input-group"><label>Pincode</label><input type="number" id="editPin" value="${userData.pincode}" oninput="fetchCity(this.value, 'editCity')"></div>
+                    <div class="input-group"><label>City</label><input type="text" id="editCity" value="${userData.city}" readonly></div>
+                </div>
+            `;
+        }
+    }
+
+    function cancelEdit() {
+        document.getElementById('profile-edit-form').style.display = 'none';
+        document.getElementById('profile-info-box').style.display = 'block';
+    }
+
+    async function saveProfile() {
+        const uPhone = localStorage.getItem("rozgaarPhone");
+        const uType = localStorage.getItem("rozgaarType");
+        
+        const snap = await db.collection("JobSeekers").where("phone", "==", uPhone).get();
+        if(snap.empty) return;
+        const docId = snap.docs[0].id;
+        
+        let updateData = {
+            name: document.getElementById('editName').value,
+            pincode: document.getElementById('editPin').value,
+            city: document.getElementById('editCity').value
+        };
+        
+        if(uType === 'employer') {
+            updateData.address = document.getElementById('editAddress').value;
+            updateData.hiringRole = document.getElementById('editHiringRole').value; // NAYA DATA SAVE HOGA
+        } else {
+            const editedSkill = document.getElementById('editSkill').value;
+            if(!commonJobs.includes(editedSkill)) {
+                return Swal.fire("Galat Kaam", "Kripya kaam ka naam List (Popup) me se hi chunein.", "warning");
+            }
+            updateData.skill = editedSkill;
+            updateData.exp = document.getElementById('editExp').value;
+            updateData.salary = Number(document.getElementById('editSalary').value);
+        }
+        
+        Swal.fire({ title: 'Saving...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+        await db.collection("JobSeekers").doc(docId).update(updateData);
+        
+        document.getElementById('dash-greeting').innerText = `Hi, ${updateData.name.split(' ')[0]} 👋`;
+        document.getElementById('prof-pin').innerText = updateData.pincode;
+        localStorage.setItem("rozgaarPin", updateData.pincode);
+        
+        cancelEdit();
+        Swal.fire("Updated! ✨", "Aapki profile successfully update ho gayi hai.", "success");
+    }
+
+    // ==========================================
+    // PHASE 7: ADMIN LOGIC
+    // ==========================================
+    async function loadAdminData(type) {
+        document.getElementById('admin-tab-emp').classList.remove('active-tab');
+        document.getElementById('admin-tab-staff').classList.remove('active-tab');
+        if(type === 'employer') document.getElementById('admin-tab-emp').classList.add('active-tab');
+        else document.getElementById('admin-tab-staff').classList.add('active-tab');
+
+        const listDiv = document.getElementById('admin-list-container');
+        listDiv.innerHTML = "<p style='text-align:center; color:#fff; font-weight:bold;'>Loading Data... ⏳</p>";
+
+        try {
+            const empSnap = await db.collection("JobSeekers").where("type", "==", "employer").get();
+            const staffSnap = await db.collection("JobSeekers").where("type", "==", "seeker").get();
+            document.getElementById('adminTotalShops').innerText = empSnap.size;
+            document.getElementById('adminTotalStaff').innerText = staffSnap.size;
+
+            const snap = await db.collection("JobSeekers").where("type", "==", type).get();
+            let h = "";
+            snap.forEach(doc => {
+                const d = doc.data();
+                h += `<div class="admin-user-card animate__animated animate__fadeInUp">
+                        <div class="admin-user-info">
+                            <h4>${type === 'employer' ? '🏢' : '👨‍🔧'} ${d.name}</h4>
+                            <p>📞 ${d.phone} | 📍 ${d.city}</p>
+                            <p style="color:var(--primary); font-weight:bold; margin-top:3px;">${type === 'employer' ? 'Shop Owner' : d.skill}</p>
+                        </div>
+                        <button class="btn-delete-user" onclick="deleteUser('${doc.id}', '${d.name}')">Delete 🗑️</button>
+                      </div>`;
+            });
+            listDiv.innerHTML = h || "<p style='text-align:center; color:#aaa;'>Koi user nahi mila.</p>";
+        } catch(e) {
+            listDiv.innerHTML = "<p style='color:var(--danger); text-align:center;'>Error loading data.</p>";
+        }
+    }
+
+    async function deleteUser(docId, name) {
+        Swal.fire({
+            title: `Delete ${name}?`,
+            text: "Yeh user database se hamesha ke liye delete ho jayega!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            confirmButtonText: 'Yes, Delete!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                Swal.fire({ title: 'Deleting...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+                await db.collection("JobSeekers").doc(docId).delete();
+                Swal.fire('Deleted!', 'User uda diya gaya hai.', 'success');
+                
+                const activeType = document.getElementById('admin-tab-emp').classList.contains('active-tab') ? 'employer' : 'seeker';
+                loadAdminData(activeType);
+            }
+        });
+    }
+
+    function logout() { localStorage.clear(); location.reload(); }
+
+    window.onload = () => { if(localStorage.getItem("rozgaarUID")) goToDashboard(); };
+</script>
+
+</body>
+</html>
