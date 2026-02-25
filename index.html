@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RozgaarIn | Apna Rozgaar Network</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -108,7 +114,7 @@
         .swal2-html-container { color: #94a3b8 !important; font-family: 'Plus Jakarta Sans', sans-serif !important; }
         .swal2-confirm { background: var(--primary) !important; border-radius: 14px !important; font-weight: 800 !important; padding: 12px 35px !important; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4) !important; font-family: 'Plus Jakarta Sans', sans-serif !important; }
 
-        /* PHASE 3 CSS */
+        /* DASHBOARD CSS */
         .bottom-nav {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 400px; background: rgba(30, 41, 59, 0.85);
@@ -429,6 +435,20 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
 <script>
+    // ==========================================
+    // PWA: SERVICE WORKER REGISTRATION (NAYA)
+    // ==========================================
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').then((registration) => {
+                console.log('[RozgaarIn] Service Worker Active!', registration.scope);
+            }).catch((error) => {
+                console.log('Service Worker Error:', error);
+            });
+        });
+    }
+    // ==========================================
+
     const firebaseConfig = { 
         apiKey: "AIzaSyD3hc6Rz1gHZq8c71AHp5NSw8eSZT2-Mik", 
         authDomain: "savitri-job-bridge.firebaseapp.com", 
@@ -554,7 +574,6 @@
     function generateDynamicFields(role) {
         const container = document.getElementById('dynamic-fields');
         if(role === 'employer') {
-            // YAHAN NAYA FIELD ADD KIYA HAI "Aapko kaisa staff chahiye?"
             container.innerHTML = `
                 <div class="input-group"><label>Shop / Business Name</label><input type="text" id="rName" placeholder="e.g. Savitri Electronics"></div>
                 <div class="input-group autocomplete-wrapper">
@@ -611,7 +630,6 @@
                 return Swal.fire("Galat Kaam", "Kripya aapna kaam niche aayi hui List (Popup) me se hi chunein.", "warning");
             }
         } else {
-            // Employer ke liye bhi validation
             const typedHiringRole = document.getElementById('rHiringRole').value;
             if(!typedHiringRole) return Swal.fire("Error", "Kripya batayein aapko kaisa staff chahiye.", "warning");
         }
@@ -632,7 +650,7 @@
             data.rating = 5.0; data.status = "Available"; data.dealStatus = "None";
         } else {
             data.address = document.getElementById('rAddress').value;
-            data.hiringRole = document.getElementById('rHiringRole').value; // NAYA DATA SAVE HOGA
+            data.hiringRole = document.getElementById('rHiringRole').value; 
         }
 
         await db.collection("JobSeekers").add(data);
@@ -647,7 +665,6 @@
         const pin = document.getElementById('lPin').value;
         if(!phone || !pin) return Swal.fire("Error", "Number aur PIN dono bharein!", "error");
 
-        // PHASE 7: SECRET ADMIN LOGIN BYPASS
         if(phone === "9999999999" && pin === "9999") {
             Swal.fire("Boss Login", "Admin Panel Unlocked 👑", "success").then(() => {
                 document.getElementById('auth-view').style.display = 'none';
@@ -689,7 +706,7 @@
             const { value: recPincode } = await Swal.fire({
                 title: 'Security Check',
                 input: 'number',
-                inputLabel: 'Aapka Area Pincode kya hai? (Jo account banate waqt dala tha)',
+                inputLabel: 'Aapka Area Pincode kya hai?',
                 inputPlaceholder: 'e.g. 274204',
                 showCancelButton: true,
                 confirmButtonText: 'Verify'
@@ -700,7 +717,7 @@
                 const snap = await db.collection("JobSeekers").where("phone", "==", recPhone).where("pincode", "==", recPincode).get();
                 
                 if (snap.empty) {
-                    Swal.fire("Verification Failed", "Number ya Pincode match nahi hua. Kripya sahi details daalein.", "error");
+                    Swal.fire("Verification Failed", "Number ya Pincode match nahi hua.", "error");
                 } else {
                     const docId = snap.docs[0].id;
                     const { value: newPin } = await Swal.fire({
@@ -718,7 +735,7 @@
                     if (newPin) {
                         Swal.fire({ title: 'Updating...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
                         await db.collection("JobSeekers").doc(docId).update({ pinAuth: newPin });
-                        Swal.fire("Success!", "Aapka naya PIN set ho gaya hai. Ab aap login kar sakte hain.", "success");
+                        Swal.fire("Success!", "Aapka naya PIN set ho gaya hai.", "success");
                     }
                 }
             }
@@ -843,7 +860,7 @@
                     let badgeClass = d.dealStatus === 'Accepted' ? 'badge-accepted' : 'badge-pending';
                     let empEncodedData = encodeURIComponent(JSON.stringify({
                         name: d.hiredByName, hiredByAddress: d.hiredByAddress,
-                        city: "Verified Locality", pincode: "Verified", phone: d.hiredByPhone
+                        city: "Verified Locality", pincode: "Verified", phone: d.hiredByPhone, hiringRole: d.hiringRole
                     }));
 
                     let actionHTML = '';
@@ -926,7 +943,7 @@
                     const d = doc.data();
                     if(d.city.toLowerCase().includes(searchInputText) || d.pincode.includes(searchInputText)) {
                         let empEncodedData = encodeURIComponent(JSON.stringify({
-                            name: d.name, hiredByAddress: d.address, city: d.city, pincode: d.pincode, phone: d.phone
+                            name: d.name, hiredByAddress: d.address, city: d.city, pincode: d.pincode, phone: d.phone, hiringRole: d.hiringRole
                         }));
                         // NAYA LOGIC: Yahan d.hiringRole dikhega (Jaise: Hiring Salesman)
                         let jobRoleText = d.hiringRole ? `💼 Hiring: ${d.hiringRole}` : `💼 Staff Chahiye`;
@@ -990,17 +1007,14 @@
             }
         });
     }
-    // ==========================================
-    // VIP BLACK & GOLD RESUME LOGIC
-    // ==========================================
     function openDynamicVip(encodedData, profileType) {
         const d = JSON.parse(decodeURIComponent(encodedData));
         
         if(profileType === 'employer') {
             document.getElementById('vipDynamicIcon').innerText = '🏢';
             document.getElementById('vipDynamicName').innerText = d.hiredByName || d.name;
-            // Yahan modal mein bhi dikhega ki dukaandaar ko kaun chahiye
-            document.getElementById('vipDynamicSubtitle').innerText = d.hiringRole ? `Hiring: ${d.hiringRole}` : 'Verified Business';
+            // NAYA LOGIC: Yahan modal mein bhi dikhega ki dukaandaar ko kaun chahiye
+            document.getElementById('vipDynamicSubtitle').innerText = d.hiringRole ? `💼 Hiring: ${d.hiringRole}` : 'Verified Business';
             document.getElementById('vipLabel1').innerText = '📍 Full Address';
             document.getElementById('vipVal1').innerText = d.hiredByAddress || d.address || 'Address not found';
             document.getElementById('vipLabel2').innerText = '🏙️ City / Pincode';
@@ -1149,7 +1163,7 @@
         const container = document.getElementById('edit-dynamic-fields');
         
         if(uType === 'employer') {
-            // NAYA LOGIC: Dukaandaar ab apna "Kaisa Staff Chahiye" edit kar sakta hai
+            // NAYA LOGIC: Dukaandaar ab apna "Kaisa Staff Chahiye" (Hiring Role) edit kar sakta hai
             container.innerHTML = `
                 <div class="input-group"><label>Shop Name</label><input type="text" id="editName" value="${userData.name}"></div>
                 <div class="input-group autocomplete-wrapper">
@@ -1204,7 +1218,8 @@
         
         if(uType === 'employer') {
             updateData.address = document.getElementById('editAddress').value;
-            updateData.hiringRole = document.getElementById('editHiringRole').value; // NAYA DATA SAVE HOGA
+            // NAYA DATA SAVE HOGA
+            updateData.hiringRole = document.getElementById('editHiringRole').value; 
         } else {
             const editedSkill = document.getElementById('editSkill').value;
             if(!commonJobs.includes(editedSkill)) {
@@ -1252,7 +1267,7 @@
                         <div class="admin-user-info">
                             <h4>${type === 'employer' ? '🏢' : '👨‍🔧'} ${d.name}</h4>
                             <p>📞 ${d.phone} | 📍 ${d.city}</p>
-                            <p style="color:var(--primary); font-weight:bold; margin-top:3px;">${type === 'employer' ? 'Shop Owner' : d.skill}</p>
+                            <p style="color:var(--primary); font-weight:bold; margin-top:3px;">${type === 'employer' ? (d.hiringRole ? `Hiring: ${d.hiringRole}` : 'Shop Owner') : d.skill}</p>
                         </div>
                         <button class="btn-delete-user" onclick="deleteUser('${doc.id}', '${d.name}')">Delete 🗑️</button>
                       </div>`;
