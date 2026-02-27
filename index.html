@@ -77,6 +77,7 @@
         /* Forms UI */
         .auth-section { display: none; width: 100%; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 30px; padding: 25px; box-sizing: border-box; }
         .back-btn { background: transparent; border: none; color: var(--text-muted); font-size: 14px; padding: 0 0 20px 0; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: 600; width: 100%; text-align: left; transition: transform 0.2s ease;}
+        .back-btn:active { transform: translateX(-8px); color: #fff;}
         
         .tab-box { display: flex; background: rgba(0,0,0,0.3); border-radius: 15px; padding: 5px; margin-bottom: 25px; }
         .tab-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; cursor: pointer; color: var(--text-muted); background: transparent; font-weight: 600; font-family: inherit; font-size: 14px; transition: all 0.2s ease;}
@@ -90,11 +91,13 @@
             transition: all 0.3s ease;
         }
         input:focus, select:focus { border-color: var(--primary); background: rgba(0,0,0,0.4); box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+        select option { background: var(--dark-bg); color: #fff; }
         
         .btn-main { 
             width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 15px; 
-            font-weight: 800; cursor: pointer; margin-top: 10px; font-size: 16px; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            font-weight: 800; cursor: pointer; margin-top: 10px; font-size: 16px; transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
         }
+        .btn-main:active { transform: scale(0.96); box-shadow: 0 0px 5px rgba(59, 130, 246, 0.4); }
 
         .flex-row { display: flex; gap: 10px; }
         .flex-row > div { flex: 1; }
@@ -104,18 +107,21 @@
         .swal2-popup {
             background: rgba(30, 41, 59, 0.85) !important; backdrop-filter: blur(25px) !important;
             border: 1px solid rgba(255, 255, 255, 0.1) !important; border-radius: 28px !important;
-            color: #f8fafc !important;
+            color: #f8fafc !important; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6) !important;
+            padding-bottom: 25px !important;
         }
         .swal2-title { color: #fff !important; font-family: 'Plus Jakarta Sans', sans-serif !important; font-weight: 800 !important; }
+        .swal2-html-container { color: #94a3b8 !important; font-family: 'Plus Jakarta Sans', sans-serif !important; }
+        .swal2-confirm { background: var(--primary) !important; border-radius: 14px !important; font-weight: 800 !important; padding: 12px 35px !important; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4) !important; font-family: 'Plus Jakarta Sans', sans-serif !important; }
 
-        /* NAYA: DASHBOARD PRO CSS */
+        /* DASHBOARD CSS */
         .bottom-nav {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 400px; background: rgba(30, 41, 59, 0.85);
             backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 30px; 
-            display: flex; justify-content: space-around; padding: 12px 20px; z-index: 1000;
+            display: flex; justify-content: space-around; padding: 12px 20px; z-index: 1000; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6);
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .nav-icon { font-size: 22px; transition: transform 0.3s; }
         .nav-item.active { color: var(--primary); }
         .nav-item.active .nav-icon { transform: translateY(-4px) scale(1.1); }
@@ -123,11 +129,12 @@
         .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .dash-badge { background: var(--primary); font-size: 10px; padding: 4px 10px; border-radius: 8px; font-weight: 800; letter-spacing: 1px; }
 
-        /* NAYA: VOICE SEARCH & FILTERS CSS */
+        /* SEARCH, MIC & FILTERS */
         .search-container { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
         .search-input-wrapper { flex: 1; position: relative; }
         .search-icon-inside { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); opacity: 0.6; font-size: 16px; }
-        .search-modern { width: 100%; padding: 16px 15px 16px 45px; border-radius: 18px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: #fff; font-size: 14px; }
+        .search-modern { width: 100%; padding: 16px 15px 16px 45px; border-radius: 18px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: #fff; font-size: 14px; outline: none; transition: 0.3s; }
+        .search-modern:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); }
         
         .mic-btn {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border: none; border-radius: 16px; 
@@ -140,26 +147,28 @@
 
         .filter-row { display: flex; gap: 10px; margin-bottom: 20px; }
         .filter-select { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); color: #fff; padding: 12px; border-radius: 14px; font-size: 12px; outline: none; }
-        .filter-select option { background: var(--dark-bg); color: #fff; }
 
         .offer-card {
             background: linear-gradient(145deg, rgba(30,41,59,0.9), rgba(15,23,42,0.95));
-            border: 1px solid var(--glass-border); border-radius: 24px; padding: 22px; margin-bottom: 20px; position: relative; overflow: hidden;
+            border: 1px solid var(--glass-border); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            border-radius: 24px; padding: 22px; margin-bottom: 20px; position: relative; overflow: hidden; animation: fadeInUp 0.4s ease;
         }
-        .offer-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); }
+        .offer-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); box-shadow: 0 0 15px var(--primary); }
 
-        /* NAYA: URGENT & RATING TAGS CSS */
         .urgent-tag {
             background: #ef4444; color: white; font-size: 10px; padding: 4px 8px; border-radius: 8px; font-weight: 900; 
             letter-spacing: 0.5px; animation: pulse-red 1.5s infinite; text-transform: uppercase; display: inline-block; margin-bottom: 5px;
         }
         @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
         
+        .gold-tick { color: #d4af37; text-shadow: 0 0 8px rgba(212,175,55,0.7); font-weight: bold; }
         .rating-stars { color: #fbbf24; font-size: 13px; letter-spacing: 2px; margin-top: 5px; font-weight: bold; }
 
         .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
-        .btn-accept { background: var(--success); color: #fff; border: none; padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer; }
-        .btn-decline { background: rgba(239, 68, 68, 0.1); color: #fca5a5; border: 1px solid var(--danger); padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer; }
+        .btn-accept { background: var(--success); color: #fff; border: none; padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); transition: 0.2s; }
+        .btn-accept:active { transform: scale(0.95); }
+        .btn-decline { background: rgba(239, 68, 68, 0.1); color: #fca5a5; border: 1px solid var(--danger); padding: 14px; border-radius: 14px; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .btn-decline:active { transform: scale(0.95); background: var(--danger); color: #fff; }
 
         .toggle-wrapper { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 15px 20px; border-radius: 20px; border: 1px solid var(--glass-border); margin-bottom: 20px; }
         .toggle-switch { position: relative; display: inline-block; width: 52px; height: 28px; }
@@ -169,21 +178,60 @@
         input:checked + .slider { background-color: var(--success); }
         input:checked + .slider:before { transform: translateX(24px); background-color: #fff; }
 
-        /* AUTOCOMPLETE & MISC */
+        .profile-edit-box { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 25px; margin-bottom: 20px; }
+        .status-badge { font-size: 10px; padding: 4px 8px; border-radius: 12px; font-weight: bold; text-transform: uppercase; float: right; }
+        .badge-pending { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+        .badge-accepted { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+
+        /* SMART AUTOCOMPLETE CSS */
         .autocomplete-wrapper { position: relative; width: 100%; }
-        .autocomplete-list { position: absolute; top: 100%; left: 0; width: 100%; background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(25px); border: 1px solid var(--primary); border-radius: 15px; max-height: 180px; overflow-y: auto; z-index: 9999; display: none; margin-top: 5px; }
-        .autocomplete-item { padding: 14px 18px; color: #fff; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
-        .wa-btn { background: linear-gradient(135deg, #25D366, #128C7E) !important; color: #fff !important; font-weight: bold !important; border: none !important; }
-        .vip-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
-        .vip-resume-card { width: 100%; max-width: 380px; background: linear-gradient(145deg, #111, #1a1a1a); border: 2px solid #d4af37; border-radius: 20px; padding: 30px; position: relative; }
+        .autocomplete-list {
+            position: absolute; top: 100%; left: 0; width: 100%; background: rgba(30, 41, 59, 0.95); backdrop-filter: blur(25px);
+            border: 1px solid var(--primary); border-radius: 15px; max-height: 180px; overflow-y: auto; z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7); display: none; margin-top: 5px;
+        }
+        .autocomplete-item { padding: 14px 18px; color: #fff; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; }
+        .autocomplete-item:last-child { border-bottom: none; }
+        .autocomplete-item:hover, .autocomplete-item:active { background: var(--primary); font-weight: bold; }
+
+        /* WHATSAPP ANIMATION */
+        .wa-btn { background: linear-gradient(135deg, #25D366, #128C7E) !important; color: #fff !important; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4) !important; animation: pulse-wa 2s infinite; border: none !important; font-weight: bold !important; }
+        @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
+
+        /* VIP DYNAMIC RESUME MODAL CSS */
+        .vip-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 9999; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        .vip-resume-card { width: 100%; max-width: 380px; background: linear-gradient(145deg, #111, #1a1a1a); border: 2px solid #d4af37; border-radius: 20px; padding: 30px; position: relative; box-shadow: 0 15px 35px rgba(212, 175, 55, 0.2); }
         .gold-text { background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .certified-badge { position: absolute; top: -15px; right: -10px; background: linear-gradient(135deg, #d4af37, #fcf6ba); color: #000; font-size: 11px; font-weight: 900; padding: 5px 12px; border-radius: 20px; }
+        .certified-badge { position: absolute; top: -15px; right: -10px; background: linear-gradient(135deg, #d4af37, #fcf6ba); color: #000; font-size: 11px; font-weight: 900; padding: 5px 12px; border-radius: 20px; box-shadow: 0 4px 10px rgba(212,175,55,0.4); letter-spacing: 0.5px; }
+
+        /* ADMIN CONTROL ROOM CSS */
+        .admin-header { background: linear-gradient(135deg, #ef4444, #991b1b); padding: 20px; border-radius: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); }
+        .admin-stat-box { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
+        .stat-card { flex: 1; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); padding: 15px; border-radius: 15px; text-align: center; }
+        .stat-card h3 { margin: 0; font-size: 24px; color: #fff; }
+        .stat-card p { margin: 5px 0 0 0; font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: bold; }
+        
+        .admin-user-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .admin-user-info h4 { margin: 0 0 5px 0; font-size: 15px; color: #fff; }
+        .admin-user-info p { margin: 0; font-size: 12px; color: var(--text-muted); }
+        .btn-delete-user { background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: #fca5a5; padding: 8px 15px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .btn-delete-user:active { background: var(--danger); color: #fff; }
+
+        /* INSTAGRAM STYLE PHOTO UPLOAD CSS */
         .profile-pic-container { text-align: center; margin-bottom: 25px; }
         .profile-pic-wrapper { width: 110px; height: 110px; margin: 0 auto; position: relative; cursor: pointer; }
         .profile-pic-circle { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; border: 3px solid var(--primary); background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; }
         .profile-pic-circle img { width: 100%; height: 100%; object-fit: cover; }
         .camera-icon-badge { position: absolute; bottom: 0; right: 0; background: var(--primary); width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid #0f172a; font-size: 16px; color: #fff; }
-        .install-banner { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--primary), var(--primary-dark)); padding: 12px 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(59,130,246,0.5); z-index: 9999; align-items: center; gap: 10px; width: 90%; max-width: 350px; border: 1px solid rgba(255,255,255,0.2); }
+        
+        /* INSTALL APP BANNER CSS */
+        .install-banner {
+            display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 12px 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(59,130,246,0.5);
+            z-index: 9999; align-items: center; gap: 10px; width: 90%; max-width: 350px;
+            animation: fadeInDown 0.5s ease; border: 1px solid rgba(255,255,255,0.2);
+        }
     </style>
 </head>
 <body>
@@ -219,6 +267,7 @@
         <div class="pulse-dot"></div> 100% Secure & Verified Local Network
     </div>
 </div>
+
 <div class="container auth-section" id="auth-view">
     <button class="back-btn" onclick="goBack()">← Wapas Jayein</button>
     <div>
@@ -227,19 +276,22 @@
             <button class="tab-btn active-tab" id="tab-register" onclick="switchAuthTab('register')">Naya Account</button>
             <button class="tab-btn" id="tab-login" onclick="switchAuthTab('login')">Login Karein</button>
         </div>
+        
         <div id="register-form">
             <div class="input-group"><label>Mobile Number (Yeh aapki ID hogi)</label><input type="tel" id="rPhone" placeholder="10 Digit Number" maxlength="10"></div>
+            
             <div id="dynamic-fields"></div>
+            
             <div class="input-group">
                 <label>Set 4-Digit Login PIN 🔒</label>
                 <input type="password" id="rPin" class="pin-box" placeholder="****" maxlength="4" inputmode="numeric">
-                <p style="font-size:11px; color:var(--text-muted); margin-top:5px;">Yeh PIN yaad rakhein. Agli baar login karne ke liye yahi kaam aayega.</p>
+                <p style="font-size:11px; color:var(--text-muted); margin-top:5px;">Yeh PIN yaad rakhein. Agli baar login ke liye yahi kaam aayega.</p>
             </div>
             <button class="btn-main" onclick="processRegister()">REGISTER ACCOUNT ✨</button>
         </div>
+        
         <div id="login-form" style="display:none;">
             <div class="input-group"><label>Registered Mobile Number</label><input type="tel" id="lPhone" placeholder="10 Digit Number" maxlength="10"></div>
-            
             <div class="input-group">
                 <label>4-Digit PIN 🔒</label>
                 <input type="password" id="lPin" class="pin-box" placeholder="****" maxlength="4" inputmode="numeric">
@@ -247,14 +299,12 @@
                     <a href="javascript:void(0)" onclick="forgotPin()" style="color: var(--primary); font-size: 12px; font-weight: bold; text-decoration: none;">PIN Bhool Gaye?</a>
                 </div>
             </div>
-            
             <button class="btn-main" onclick="processLogin()" style="background:var(--success); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);">SECURE LOGIN ➡️</button>
         </div>
     </div>
 </div>
 
 <div class="container" id="dash-view" style="display: none; padding-bottom: 100px; padding-top: 10px;">
-    
     <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 25px;">
         <h2 style="margin: 0; font-size: 26px; font-weight: 800; letter-spacing: -1px;">Rozgaar<span class="text-gradient">In</span></h2>
     </div>
@@ -324,9 +374,7 @@
 
         <div class="profile-edit-box animate__animated animate__fadeInDown" id="profile-edit-form" style="display:none;">
             <h3 style="margin-top:0; border-bottom:1px solid var(--glass-border); padding-bottom:10px; color:var(--primary);">Update Details ⚙️</h3>
-            
             <div id="edit-dynamic-fields"></div>
-
             <div style="display:flex; gap:10px; margin-top:15px;">
                 <button onclick="cancelEdit()" style="flex:1; padding:12px; border-radius:12px; border:1px solid var(--danger); background:transparent; color:#fca5a5; font-weight:bold; cursor:pointer;">Cancel</button>
                 <button onclick="saveProfile()" style="flex:1; padding:12px; border-radius:12px; border:none; background:var(--success); color:#fff; font-weight:bold; cursor:pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);">Save ✔</button>
@@ -343,15 +391,9 @@
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active" id="nav-btn-home" onclick="switchNav('home')">
-            <span class="nav-icon">🏠</span><span>Home</span>
-        </div>
-        <div class="nav-item" id="nav-btn-search" onclick="switchNav('search')" style="display:none;">
-            <span class="nav-icon">🔍</span><span>Search</span>
-        </div>
-        <div class="nav-item" id="nav-btn-profile" onclick="switchNav('profile')">
-            <span class="nav-icon">👤</span><span>Profile</span>
-        </div>
+        <div class="nav-item active" id="nav-btn-home" onclick="switchNav('home')"><span class="nav-icon">🏠</span><span>Home</span></div>
+        <div class="nav-item" id="nav-btn-search" onclick="switchNav('search')" style="display:none;"><span class="nav-icon">🔍</span><span>Search</span></div>
+        <div class="nav-item" id="nav-btn-profile" onclick="switchNav('profile')"><span class="nav-icon">👤</span><span>Profile</span></div>
     </div>
 </div>
 
@@ -360,58 +402,40 @@
         <h2 style="margin: 0; color: #fff; font-weight: 800;">👑 Boss Control Room</h2>
         <p style="margin: 5px 0 0 0; color: #fca5a5; font-size: 13px;">App Database Manager</p>
     </div>
-
     <div class="admin-stat-box animate__animated animate__fadeInUp">
-        <div class="stat-card">
-            <h3 id="adminTotalShops">0</h3>
-            <p>Employers</p>
-        </div>
-        <div class="stat-card">
-            <h3 id="adminTotalStaff">0</h3>
-            <p>Staff (Seekers)</p>
-        </div>
+        <div class="stat-card"><h3 id="adminTotalShops">0</h3><p>Employers</p></div>
+        <div class="stat-card"><h3 id="adminTotalStaff">0</h3><p>Staff (Seekers)</p></div>
     </div>
-
     <div class="tab-box animate__animated animate__fadeIn">
         <button class="tab-btn active-tab" id="admin-tab-emp" onclick="loadAdminData('employer')">🏢 Shops</button>
         <button class="tab-btn" id="admin-tab-staff" onclick="loadAdminData('seeker')">👨‍🔧 Staff</button>
     </div>
-
-    <div id="admin-list-container" style="min-height: 300px;">
-        </div>
-
+    <div id="admin-list-container" style="min-height: 300px;"></div>
     <button onclick="logout()" style="width:100%; padding:15px; border-radius:15px; border:1px solid #aaa; background:transparent; color:#fff; font-weight:bold; cursor:pointer; margin-top: 20px;">Exit Admin Panel 🚪</button>
 </div>
 
 <div id="vipDynamicModal" class="vip-modal-overlay animate__animated">
     <div class="vip-resume-card">
         <div class="certified-badge">✔ VERIFIED</div>
-        
         <div style="text-align:center; margin-bottom: 20px;">
             <div id="vipDynamicIcon" style="width:75px; height:75px; margin:0 auto 10px; background:#222; border:2px solid #d4af37; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:35px; box-shadow: 0 0 15px rgba(212,175,55,0.3); overflow: hidden;">👤</div>
             <h2 id="vipDynamicName" style="color:#fff; margin:0; font-size:24px; font-weight:800;">Name</h2>
             <h4 id="vipDynamicSubtitle" class="gold-text" style="margin:5px 0 0 0; font-size:15px; text-transform:uppercase; letter-spacing:1px;">Role</h4>
         </div>
-
         <div style="background:rgba(255,255,255,0.05); padding:18px; border-radius:15px; margin-bottom:25px; border: 1px solid rgba(212,175,55,0.1);">
             <div id="vipRow1" style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:8px;">
-                <span id="vipLabel1" style="color:#aaa; font-size:13px;">Label 1</span>
-                <span id="vipVal1" style="color:#fff; font-weight:bold; font-size:13px; text-align:right; max-width:60%;">Val 1</span>
+                <span id="vipLabel1" style="color:#aaa; font-size:13px;">Label 1</span><span id="vipVal1" style="color:#fff; font-weight:bold; font-size:13px; text-align:right; max-width:60%;">Val 1</span>
             </div>
             <div id="vipRow2" style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:8px;">
-                <span id="vipLabel2" style="color:#aaa; font-size:13px;">Label 2</span>
-                <span id="vipVal2" style="color:#fff; font-weight:bold; font-size:13px; text-align:right; max-width:60%;">Val 2</span>
+                <span id="vipLabel2" style="color:#aaa; font-size:13px;">Label 2</span><span id="vipVal2" style="color:#fff; font-weight:bold; font-size:13px; text-align:right; max-width:60%;">Val 2</span>
             </div>
             <div id="vipRow3" style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:8px;">
-                <span id="vipLabel3" style="color:#aaa; font-size:13px;">Label 3</span>
-                <span id="vipVal3" style="color:#fff; font-weight:bold; font-size:13px; text-align:right; max-width:60%;">Val 3</span>
+                <span id="vipLabel3" style="color:#aaa; font-size:13px;">Label 3</span><span id="vipVal3" style="color:#fff; font-weight:bold; font-size:13px; text-align:right; max-width:60%;">Val 3</span>
             </div>
             <div id="vipRow4" style="display:flex; justify-content:space-between; margin-top:5px;">
-                <span id="vipLabel4" style="color:#aaa; font-size:14px;">Label 4</span>
-                <span id="vipVal4" class="gold-text" style="font-weight:900; font-size:18px;">Val 4</span>
+                <span id="vipLabel4" style="color:#aaa; font-size:14px;">Label 4</span><span id="vipVal4" class="gold-text" style="font-weight:900; font-size:18px;">Val 4</span>
             </div>
         </div>
-
         <button onclick="closeDynamicVip()" style="width:100%; padding:14px; background:transparent; border:1px solid #d4af37; color:#d4af37; font-weight:bold; font-size:15px; border-radius:12px; cursor:pointer; box-shadow: 0 5px 15px rgba(212,175,55,0.2);">Close ❌</button>
     </div>
 </div>
@@ -428,9 +452,7 @@
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js').then((reg) => {
-                console.log('[RozgaarIn] SW Active!');
-            }).catch(err => console.log('SW Error:', err));
+            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW Error:', err));
         });
     }
 
@@ -474,29 +496,19 @@
     let currentRole = '';
 
     const commonJobs = [
-        "Dukan Ka Ladka (Shop Helper)", "Counter Ladka (Counter Salesman)", 
-        "Munim (Accountant)", "Bori Uthane Wala (Palledar / Loader)", 
-        "Delivery Boy (Saman Puhanchane Wala)", "Godam Keeper (Store Room Incharge)", 
-        "Cashier (Paisa Lene Wala)", "Rajmistri (Head Mason)", 
-        "Majdoor (Daily Wage Labour)", "Beldar (Helper Labour)", 
-        "Thekedar (Contractor)", "Plumber (Nal Wala / Pipe Mistri)", 
-        "Painter (Rong Mistri)", "Shuttering Wala (Centring ladka)", 
-        "Welder (Loha Jodne Wala)", "Tile/Marble Mistri", 
-        "Bijli Wala (Electrician)", "Motor Mechanic (Gadi Banane Wala)", 
-        "Bike/Scooty Mistri (Two-Wheeler Mechanic)", "Puncture Wala", 
-        "Mobile Banane Wala (Mobile Mistri)", "AC/Fridge Mistri (Technician)", 
-        "RO/Water Purifier Wala", "Driver (Car/Gadi Chalane Wala)", 
-        "Loading Auto/Tata Ace Driver", "Tractor Driver", "E-Rickshaw Driver", 
-        "JCB Driver", "Bawarchi / Halwai (Cook)", "Waiter (Khana Dene Wala)", 
-        "Bartan Dhone Wala (Dishwasher)", "Kaamwali Bai (House Maid)", 
-        "Safai Karamchari (Sweeper)", "Security Guard (Chowkidar)", 
-        "Mali (Gardener)", "Darji (Tailor / Silai Wala)", "Kadhai Wala", 
-        "Beauty Parlour Wali (Beautician)", "Computer Chalane Wala (Data Entry)", 
-        "Clinic Helper (Ward Boy / Compounder)"
+        "Dukan Ka Ladka (Shop Helper)", "Counter Ladka (Counter Salesman)", "Munim (Accountant)", 
+        "Bori Uthane Wala (Palledar)", "Delivery Boy", "Godam Keeper (Store Room)", 
+        "Cashier", "Rajmistri (Head Mason)", "Majdoor (Labour)", "Beldar (Helper)", 
+        "Thekedar (Contractor)", "Plumber", "Painter (Rong Mistri)", "Welder", 
+        "Tile/Marble Mistri", "Bijli Wala (Electrician)", "Motor Mechanic", 
+        "Bike/Scooty Mistri", "AC/Fridge Mistri", "RO/Water Purifier Wala", 
+        "Driver (Car/Gadi)", "Loading Auto/Tata Ace Driver", "E-Rickshaw Driver", 
+        "Bawarchi (Cook)", "Waiter", "Kaamwali Bai (Maid)", "Safai Karamchari", 
+        "Security Guard (Chowkidar)", "Darji (Tailor)", "Beauty Parlour Wali", "Computer Operator"
     ];
 
     // ==========================================
-    // NAYA: VOICE SEARCH (MIC) LOGIC
+    // VOICE SEARCH (MIC) LOGIC
     // ==========================================
     function startVoiceSearch() {
         if (!('webkitSpeechRecognition' in window)) {
@@ -504,7 +516,7 @@
             return;
         }
         const recognition = new webkitSpeechRecognition();
-        recognition.lang = 'hi-IN'; // Hindi support
+        recognition.lang = 'hi-IN'; // Hindi support ke liye
         recognition.onstart = function() {
             document.getElementById('micBtn').classList.add('mic-listening');
         };
@@ -512,14 +524,10 @@
             document.getElementById('micBtn').classList.remove('mic-listening');
             const transcript = event.results[0][0].transcript;
             document.getElementById('searchSkill').value = transcript;
-            performSearch(); // Auto search after listening
+            performSearch(); // Bolte hi turant search ho jayega
         };
-        recognition.onerror = function(event) {
-            document.getElementById('micBtn').classList.remove('mic-listening');
-        };
-        recognition.onend = function() {
-            document.getElementById('micBtn').classList.remove('mic-listening');
-        };
+        recognition.onerror = function() { document.getElementById('micBtn').classList.remove('mic-listening'); };
+        recognition.onend = function() { document.getElementById('micBtn').classList.remove('mic-listening'); };
         recognition.start();
     }
 
@@ -610,14 +618,11 @@
         }
     }
 
-    // ==========================================
-    // NAYA: ADVANCED REGISTRATION FIELDS
-    // ==========================================
     function generateDynamicFields(role) {
         const container = document.getElementById('dynamic-fields');
         if(role === 'employer') {
             container.innerHTML = `
-                <div class="input-group"><label>Shop / Business Name</label><input type="text" id="rName" placeholder="e.g. Savitri Electronics"></div>
+                <div class="input-group"><label>Shop / Business Name</label><input type="text" id="rName" placeholder="e.g. Savitri Electronics and Furniture"></div>
                 <div class="input-group">
                     <label>Dukaan Ki Category</label>
                     <select id="rShopCat">
@@ -625,7 +630,6 @@
                         <option value="Kirana / Grocery">Kirana / Grocery</option>
                         <option value="Kapda / Garments">Kapda / Garments</option>
                         <option value="Hardware & Sanitary">Hardware & Sanitary</option>
-                        <option value="Restaurant / Hotel">Restaurant / Hotel</option>
                         <option value="Other">Other (Anya)</option>
                     </select>
                 </div>
@@ -648,8 +652,8 @@
                     <div class="input-group">
                         <label>Gender</label>
                         <select id="rGender">
-                            <option value="Male">Male (Purush)</option>
-                            <option value="Female">Female (Mahila)</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
                         </select>
                     </div>
                 </div>
@@ -662,8 +666,8 @@
                 <div class="input-group">
                     <label>Kaam Ka Waqt (Work Time)</label>
                     <select id="rWorkType">
-                        <option value="Full-Time">Full-Time (Poora Din)</option>
-                        <option value="Part-Time">Part-Time (Half Din)</option>
+                        <option value="Full-Time">Full-Time</option>
+                        <option value="Part-Time">Part-Time</option>
                     </select>
                 </div>
                 <div class="flex-row"><div class="input-group"><label>Pincode</label><input type="number" id="rPinCode" oninput="fetchCity(this.value, 'rCity')"></div><div class="input-group"><label>Saher</label><input type="text" id="rCity" readonly placeholder="..."></div></div>
@@ -721,16 +725,16 @@
             data.prevWork = document.getElementById('rPrevWork').value || "None";
             data.salary = Number(document.getElementById('rSalary').value);
             data.status = "Available"; data.dealStatus = "None";
-            // NAYA: Age, Gender aur Work Type
+            // NAYA: Age, Gender aur Work Type save karna
             data.age = document.getElementById('rAge').value || "18";
             data.gender = document.getElementById('rGender').value;
             data.workType = document.getElementById('rWorkType').value;
         } else {
             data.address = document.getElementById('rAddress').value;
             data.hiringRole = document.getElementById('rHiringRole').value; 
-            // NAYA: Shop Category aur Urgent Hiring Tag
+            // NAYA: Shop Category aur Urgent Tag save karna
             data.shopCategory = document.getElementById('rShopCat').value;
-            data.isUrgent = false; // By default urgent nahi hoga
+            data.isUrgent = false; 
         }
 
         await db.collection("JobSeekers").add(data);
@@ -771,25 +775,13 @@
 
     async function forgotPin() {
         const { value: recPhone } = await Swal.fire({
-            title: 'Account Recovery',
-            input: 'tel',
-            inputLabel: 'Apna Registered Mobile Number daalein',
-            inputPlaceholder: '10 Digit Number',
-            showCancelButton: true,
-            confirmButtonText: 'Next',
-            inputValidator: (value) => {
-                if (!value || value.length !== 10) return 'Sahi 10-digit number daalein!'
-            }
+            title: 'Account Recovery', input: 'tel', inputLabel: 'Apna Registered Mobile Number daalein', inputPlaceholder: '10 Digit Number', showCancelButton: true, confirmButtonText: 'Next',
+            inputValidator: (value) => { if (!value || value.length !== 10) return 'Sahi 10-digit number daalein!' }
         });
 
         if (recPhone) {
             const { value: recPincode } = await Swal.fire({
-                title: 'Security Check',
-                input: 'number',
-                inputLabel: 'Aapka Area Pincode kya hai?',
-                inputPlaceholder: 'e.g. 274204',
-                showCancelButton: true,
-                confirmButtonText: 'Verify'
+                title: 'Security Check', input: 'number', inputLabel: 'Aapka Area Pincode kya hai?', inputPlaceholder: 'e.g. 274204', showCancelButton: true, confirmButtonText: 'Verify'
             });
 
             if (recPincode) {
@@ -801,15 +793,8 @@
                 } else {
                     const docId = snap.docs[0].id;
                     const { value: newPin } = await Swal.fire({
-                        title: 'Naya PIN Banayein',
-                        input: 'password',
-                        inputLabel: 'Apna naya 4-Digit PIN set karein',
-                        inputPlaceholder: '****',
-                        showCancelButton: true,
-                        confirmButtonText: 'Set PIN',
-                        inputValidator: (value) => {
-                            if (!value || value.length !== 4) return 'PIN theek 4-digit ka hona chahiye!'
-                        }
+                        title: 'Naya PIN Banayein', input: 'password', inputLabel: 'Apna naya 4-Digit PIN set karein', inputPlaceholder: '****', showCancelButton: true, confirmButtonText: 'Set PIN',
+                        inputValidator: (value) => { if (!value || value.length !== 4) return 'PIN theek 4-digit ka hona chahiye!' }
                     });
 
                     if (newPin) {
@@ -843,15 +828,10 @@
                     </div>
                 </div>
             `,
-            icon: 'info',
-            showCancelButton: true,
-            confirmButtonText: 'Pay & Verify Now',
-            cancelButtonText: 'Later',
-            background: '#1a1a1a',
-            customClass: { confirmButton: 'btn-main' }
+            icon: 'info', showCancelButton: true, confirmButtonText: 'Pay & Verify Now', cancelButtonText: 'Later', background: '#1a1a1a', customClass: { confirmButton: 'btn-main' }
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire('Coming Soon!', 'Payment system abhi jud raha hai. Abhi ke liye Admin (Boss) se sampark karein.', 'info');
+                Swal.fire('Coming Soon!', 'Payment system abhi jud raha hai. Abhi ke liye Admin se sampark karein.', 'info');
             }
         });
     }
@@ -875,7 +855,7 @@
 
         let nameTitle = userData.name.split(' ')[0];
         if(userData.isVerified) {
-            nameTitle += ' <span class="gold-tick">✔</span>'; // NAYA: Golden Tick
+            nameTitle += ' <span class="gold-tick">✔</span>'; 
         }
         document.getElementById('dash-greeting').innerHTML = `Hi, ${nameTitle} 👋`;
 
@@ -904,9 +884,8 @@
             document.getElementById('searchSkill').placeholder = "Hunar (e.g. Sales, Mistri)";
             document.getElementById('searchSkill').setAttribute('onkeyup', "showJobSuggestions(this.value, 'searchSkill-list', 'searchSkill')");
             document.getElementById('searchSkill').setAttribute('onfocus', "showJobSuggestions(this.value, 'searchSkill-list', 'searchSkill')");
-            document.getElementById('budget-container').style.display = 'block';
             
-            // NAYA: Employer ke liye Mic aur Filters On
+            // NAYA: Employer ke liye Mic aur Filters On karein
             document.getElementById('micBtn').style.display = 'flex';
             document.getElementById('smart-filters').style.display = 'flex';
         } else {
@@ -919,9 +898,8 @@
             document.getElementById('searchSkill').placeholder = "City ya Pincode (e.g. Deoria)";
             document.getElementById('searchSkill').removeAttribute('onkeyup');
             document.getElementById('searchSkill').removeAttribute('onfocus');
-            document.getElementById('budget-container').style.display = 'none'; 
             
-            // NAYA: Seeker ke liye Mic aur Filters Off
+            // NAYA: Seeker ke liye Mic aur Filters Off rakhein
             document.getElementById('micBtn').style.display = 'none';
             document.getElementById('smart-filters').style.display = 'none';
         }
@@ -939,104 +917,56 @@
             const snap = await db.collection("JobSeekers").where("hiredByUID", "==", uid).get();
             let h = "";
             snap.forEach(doc => {
-                const d = doc.data();
-                const docId = doc.id;
+                const d = doc.data(); const docId = doc.id;
                 let badgeClass = d.dealStatus === 'Accepted' ? 'badge-accepted' : 'badge-pending';
                 let encodedData = encodeURIComponent(JSON.stringify(d)); 
-
                 let actionHTML = '';
-                if(d.dealStatus === 'Accepted') {
-                    actionHTML = `
-                        <div style="display:flex; gap:10px; margin-top:15px;">
-                            <a href="tel:${d.phone}" style="flex:1; text-align:center; background:var(--primary); color:#fff; text-decoration:none; padding:10px; border-radius:12px; font-weight:bold; box-shadow:0 4px 10px rgba(59,130,246,0.3);">Call Now 📞</a>
-                            <a href="https://wa.me/91${d.phone}" target="_blank" style="flex:1; text-align:center; background:#25D366; color:#fff; text-decoration:none; padding:10px; border-radius:12px; font-weight:bold; box-shadow:0 4px 10px rgba(37,211,102,0.3);">WhatsApp 💬</a>
-                        </div>
-                        <button onclick="cancelRequest('${docId}')" style="width:100%; margin-top:12px; padding:12px; background:rgba(239, 68, 68, 0.1); border:1px solid var(--danger); color:#fca5a5; border-radius:12px; font-weight:bold; cursor:pointer; transition:0.2s;">Cancel Job ❌</button>
-                    `;
-                } else if(d.dealStatus === 'Pending' && d.initiatedBy === 'seeker') {
-                    actionHTML = `
-                        <div class="action-grid">
-                            <button class="btn-decline" onclick="updateOffer('${docId}', 'Rejected')">Decline ❌</button>
-                            <button class="btn-accept" onclick="updateOffer('${docId}', 'Accepted')">Accept ✅</button>
-                        </div>`;
-                } else {
-                    actionHTML = `
-                        <p style="font-size:12px; color:var(--text-muted); margin-top:10px; font-weight:bold;">⏳ Waiting for staff to reply...</p>
-                        <button class="btn-decline" onclick="cancelRequest('${docId}')" style="width:100%; margin-top:10px;">Cancel Request ❌</button>
-                    `;
+                
+                if(d.dealStatus === 'Accepted') { 
+                    actionHTML = `<div style="display:flex; gap:10px; margin-top:15px;"><a href="tel:${d.phone}" style="flex:1; text-align:center; background:var(--primary); color:#fff; text-decoration:none; padding:10px; border-radius:12px; font-weight:bold;">Call Now 📞</a><a href="https://wa.me/91${d.phone}" target="_blank" style="flex:1; text-align:center; background:#25D366; color:#fff; text-decoration:none; padding:10px; border-radius:12px; font-weight:bold;">WhatsApp 💬</a></div><button onclick="cancelRequest('${docId}')" style="width:100%; margin-top:12px; padding:12px; background:rgba(239, 68, 68, 0.1); border:1px solid var(--danger); color:#fca5a5; border-radius:12px; font-weight:bold; cursor:pointer;">Cancel Job ❌</button>`; 
+                } else if(d.dealStatus === 'Pending' && d.initiatedBy === 'seeker') { 
+                    actionHTML = `<div class="action-grid"><button class="btn-decline" onclick="updateOffer('${docId}', 'Rejected')">Decline ❌</button><button class="btn-accept" onclick="updateOffer('${docId}', 'Accepted')">Accept ✅</button></div>`; 
+                } else { 
+                    actionHTML = `<p style="font-size:12px; color:var(--text-muted); margin-top:10px; font-weight:bold;">⏳ Waiting for staff to reply...</p><button class="btn-decline" onclick="cancelRequest('${docId}')" style="width:100%; margin-top:10px;">Cancel Request ❌</button>`; 
                 }
 
-                h += `<div class="offer-card" style="padding:15px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span class="status-badge ${badgeClass}">${d.dealStatus}</span>
-                            <button onclick="openDynamicVip('${encodedData}', 'seeker')" style="background:transparent; border:none; font-size:12px; color:var(--primary); cursor:pointer; font-weight:bold;">👁️ View Profile</button>
-                        </div>
-                        <h3 style="margin:5px 0 0 0; font-size:16px;">${d.name} ${d.isVerified ? '<span class="gold-tick">✔</span>' : ''}</h3>
-                        <div class="rating-stars">⭐⭐⭐⭐⭐ 5.0</div>
-                        <p style="margin:5px 0 0 0; font-size:12px; color:var(--primary); font-weight:bold;">${d.skill} | ${d.workType || 'Full-Time'}</p>
-                        <p style="margin:5px 0 0 0; font-size:12px; color:var(--text-muted);">₹${d.salary}/mo</p>
-                        ${actionHTML}
-                      </div>`;
+                h += `<div class="offer-card" style="padding:15px;"><div style="display:flex; justify-content:space-between; align-items:center;"><span class="status-badge ${badgeClass}">${d.dealStatus}</span><button onclick="openDynamicVip('${encodedData}', 'seeker')" style="background:transparent; border:none; font-size:12px; color:var(--primary); cursor:pointer; font-weight:bold;">👁️ View Profile</button></div><h3 style="margin:5px 0 0 0; font-size:16px;">${d.name} ${d.isVerified ? '<span class="gold-tick">✔</span>' : ''}</h3><div class="rating-stars">⭐⭐⭐⭐⭐ 5.0</div><p style="margin:5px 0 0 0; font-size:12px; color:var(--primary); font-weight:bold;">${d.skill} | ${d.workType || 'Full-Time'}</p><p style="margin:5px 0 0 0; font-size:12px; color:var(--text-muted);">₹${d.salary}/mo</p>${actionHTML}</div>`;
             });
-            resDiv.innerHTML = h || "<p style='color:var(--text-muted); text-align:center;'>Aapne abhi tak kisi ko offer nahi bheja hai aur na hi koi application aayi hai.</p>";
+            resDiv.innerHTML = h || "<p style='color:var(--text-muted); text-align:center;'>Aapne abhi tak kisi ko offer nahi bheja hai.</p>";
         } else {
             const snap = await db.collection("JobSeekers").where("phone", "==", phone).get();
             if(!snap.empty) {
-                const d = snap.docs[0].data();
-                const docId = snap.docs[0].id;
-                
+                const d = snap.docs[0].data(); const docId = snap.docs[0].id;
                 document.getElementById('statusToggle').checked = (d.status === "Available");
                 document.getElementById('status-text').innerText = (d.status === "Available") ? "Aap abhi Available hain" : "Aap abhi Busy hain";
                 document.getElementById('status-text').style.color = (d.status === "Available") ? "var(--success)" : "var(--danger)";
 
                 if(d.hiredByUID) {
                     let badgeClass = d.dealStatus === 'Accepted' ? 'badge-accepted' : 'badge-pending';
-                    let empEncodedData = encodeURIComponent(JSON.stringify({
-                        name: d.hiredByName, hiredByAddress: d.hiredByAddress, shopCategory: d.shopCategory || 'Shop',
-                        city: "Verified Locality", pincode: "Verified", phone: d.hiredByPhone, hiringRole: d.hiringRole, photoURL: d.photoURL
-                    }));
-
+                    let empEncodedData = encodeURIComponent(JSON.stringify({ name: d.hiredByName, hiredByAddress: d.hiredByAddress, shopCategory: d.shopCategory || 'Shop', city: "Verified Locality", pincode: "Verified", phone: d.hiredByPhone, hiringRole: d.hiringRole, photoURL: d.photoURL }));
                     let actionHTML = '';
-                    if(d.dealStatus === 'Accepted') {
-                        actionHTML = `
-                            <div style="display:flex; gap:10px; margin-top:15px;">
-                                <a href="tel:${d.hiredByPhone}" style="flex:1; text-align:center; background:var(--primary); color:#fff; text-decoration:none; padding:12px; border-radius:12px; font-weight:bold; box-shadow:0 4px 10px rgba(59,130,246,0.3);">Call 📞</a>
-                                <a href="https://wa.me/91${d.hiredByPhone}" target="_blank" style="flex:1; text-align:center; background:#25D366; color:#fff; text-decoration:none; padding:12px; border-radius:12px; font-weight:bold; box-shadow:0 4px 10px rgba(37,211,102,0.3);">WhatsApp 💬</a>
-                            </div>
-                            <button onclick="cancelRequest('${docId}')" style="width:100%; margin-top:12px; padding:12px; background:rgba(239, 68, 68, 0.1); border:1px solid var(--danger); color:#fca5a5; border-radius:12px; font-weight:bold; cursor:pointer; transition:0.2s;">Cancel / End Job ❌</button>
-                        `;
-                    } else if(d.dealStatus === 'Pending' && d.initiatedBy === 'employer') {
-                        actionHTML = `
-                            <div class="action-grid">
-                                <button class="btn-decline" onclick="updateOffer('${docId}', 'Rejected')">Decline ❌</button>
-                                <button class="btn-accept" onclick="updateOffer('${docId}', 'Accepted')">Accept ✅</button>
-                            </div>`;
-                    } else if(d.dealStatus === 'Pending' && d.initiatedBy === 'seeker') {
-                        actionHTML = `
-                            <p style="font-size:12px; color:var(--text-muted); margin-top:10px; font-weight:bold;">⏳ Waiting for shop owner to reply...</p>
-                            <button class="btn-decline" onclick="cancelRequest('${docId}')" style="width:100%; margin-top:10px;">Withdraw Application ❌</button>
-                        `;
-                    } else {
-                        actionHTML = `<p style="color:var(--danger); font-size:12px; font-weight:bold; margin-top:10px;">Yeh offer reject ho chuka hai.</p>`;
+                    
+                    if(d.dealStatus === 'Accepted') { 
+                        actionHTML = `<div style="display:flex; gap:10px; margin-top:15px;"><a href="tel:${d.hiredByPhone}" style="flex:1; text-align:center; background:var(--primary); color:#fff; text-decoration:none; padding:12px; border-radius:12px; font-weight:bold;">Call 📞</a><a href="https://wa.me/91${d.hiredByPhone}" target="_blank" style="flex:1; text-align:center; background:#25D366; color:#fff; text-decoration:none; padding:12px; border-radius:12px; font-weight:bold;">WhatsApp 💬</a></div><button onclick="cancelRequest('${docId}')" style="width:100%; margin-top:12px; padding:12px; background:rgba(239, 68, 68, 0.1); border:1px solid var(--danger); color:#fca5a5; border-radius:12px; font-weight:bold; cursor:pointer;">Cancel / End Job ❌</button>`; 
+                    } else if(d.dealStatus === 'Pending' && d.initiatedBy === 'employer') { 
+                        actionHTML = `<div class="action-grid"><button class="btn-decline" onclick="updateOffer('${docId}', 'Rejected')">Decline ❌</button><button class="btn-accept" onclick="updateOffer('${docId}', 'Accepted')">Accept ✅</button></div>`; 
+                    } else if(d.dealStatus === 'Pending' && d.initiatedBy === 'seeker') { 
+                        actionHTML = `<p style="font-size:12px; color:var(--text-muted); margin-top:10px; font-weight:bold;">⏳ Waiting for shop owner...</p><button class="btn-decline" onclick="cancelRequest('${docId}')" style="width:100%; margin-top:10px;">Withdraw ❌</button>`; 
+                    } else { 
+                        actionHTML = `<p style="color:var(--danger); font-size:12px; font-weight:bold; margin-top:10px;">Yeh offer reject ho chuka hai.</p>`; 
                     }
 
-                    let h = `<div class="offer-card">
-                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                                    <span class="status-badge ${badgeClass}">${d.dealStatus}</span>
-                                    <button onclick="openDynamicVip('${empEncodedData}', 'employer')" style="background:transparent; border:none; font-size:12px; color:var(--primary); cursor:pointer; font-weight:bold;">👁️ View Shop</button>
-                                </div>
-                                <h3 style="margin:0 0 5px 0; font-size:18px;">${d.hiredByName}</h3>
-                                <p style="font-size:12px; color:var(--text-muted); margin:0;">📍 ${d.hiredByAddress}</p>
-                                ${actionHTML}
-                             </div>`;
-                    resDiv.innerHTML = h;
-                } else {
-                    resDiv.innerHTML = "<p style='text-align:center; color:var(--text-muted); margin-top:40px;'>Abhi koi naya offer nahi hai.</p>";
+                    resDiv.innerHTML = `<div class="offer-card"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;"><span class="status-badge ${badgeClass}">${d.dealStatus}</span><button onclick="openDynamicVip('${empEncodedData}', 'employer')" style="background:transparent; border:none; font-size:12px; color:var(--primary); font-weight:bold;">👁️ View Shop</button></div><h3 style="margin:0 0 5px 0; font-size:18px;">${d.hiredByName}</h3><p style="font-size:12px; color:var(--text-muted); margin:0;">📍 ${d.hiredByAddress}</p>${actionHTML}</div>`;
+                } else { 
+                    resDiv.innerHTML = "<p style='text-align:center; color:var(--text-muted); margin-top:40px;'>Abhi koi naya offer nahi hai.</p>"; 
                 }
             }
         }
     }
 
+    // ==========================================
+    // 100% ERROR-FREE PERFORM SEARCH (Smart Filters)
+    // ==========================================
     async function performSearch() {
         const uType = localStorage.getItem("rozgaarType");
         const searchInputText = document.getElementById('searchSkill').value.trim().toLowerCase();
@@ -1048,120 +978,77 @@
         try {
             let h = "";
             if (uType === 'employer') {
-                const maxBudget = Number(document.getElementById('searchBudget').value) || 999999;
+                // Filters fetch karte hain
                 const expFilter = document.getElementById('filterExp') ? document.getElementById('filterExp').value : 'all';
                 const sortFilter = document.getElementById('filterSort') ? document.getElementById('filterSort').value : 'default';
 
                 const snap = await db.collection("JobSeekers").where("type", "==", "seeker").get();
-                
                 let results = [];
+                
                 snap.forEach(doc => {
                     const d = doc.data();
-                    if(d.skill && d.skill.toLowerCase().includes(searchInputText) && d.salary <= maxBudget && d.status === "Available") {
-                        // SMART FILTER LOGIC
+                    // Search box se match and Available status
+                    if(d.skill && d.skill.toLowerCase().includes(searchInputText) && d.status === "Available") {
+                        // Experience Filter Logic
                         if(expFilter === 'fresher' && Number(d.exp) > 0) return;
                         if(expFilter === 'experienced' && Number(d.exp) === 0) return;
+                        
                         results.push({id: doc.id, ...d});
                     }
                 });
                 
-                // SMART SORT LOGIC
-                if(sortFilter === 'salaryHigh') {
-                    results.sort((a, b) => b.salary - a.salary);
-                } else if(sortFilter === 'salaryLow') {
-                    results.sort((a, b) => a.salary - b.salary);
-                } else {
+                // Sorting Logic
+                if(sortFilter === 'salaryHigh') { 
+                    results.sort((a, b) => b.salary - a.salary); 
+                } else if(sortFilter === 'salaryLow') { 
+                    results.sort((a, b) => a.salary - b.salary); 
+                } else { 
                     results.sort((a, b) => (b.isVerified === true) - (a.isVerified === true)); 
                 }
 
                 results.forEach(d => {
                     let encodedData = encodeURIComponent(JSON.stringify(d));
-                    h += `<div class="offer-card animate__animated animate__fadeInUp" style="padding:18px;">
-                            <div style="display:flex; justify-content:space-between; align-items:start;">
-                                <div>
-                                    <h3 style="margin:0 0 2px 0;">${d.name} ${d.isVerified ? '<span class="gold-tick">✔</span>' : ''}</h3>
-                                    <div class="rating-stars" style="margin-bottom:5px;">⭐⭐⭐⭐⭐ 5.0</div>
-                                    <p style="font-size:12px; color:var(--text-muted); margin:0;">${d.exp} Yrs Exp | ${d.gender || 'Any'} | 📍 ${d.city.split(',')[0]}</p>
-                                </div>
-                                <span style="color:var(--success); font-weight:900; font-size:18px;">₹${d.salary}</span>
-                            </div>
-                            <div style="display:flex; gap:10px; align-items:center; margin-top:18px;">
-                                <button onclick="openDynamicVip('${encodedData}', 'seeker')" style="flex:1; background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); padding:10px; border-radius:10px; font-weight:bold; cursor:pointer; transition:0.2s;">👁️ View</button>
-                                <button onclick="sendHireRequest('${d.id}', '${d.name}', '${d.phone}', '${d.salary}')" style="flex:2; background:var(--primary); color:#fff; border:none; padding:10px; border-radius:10px; font-weight:bold; cursor:pointer; box-shadow:0 4px 10px rgba(59,130,246,0.3);">Hire Now 🚀</button>
-                            </div>
-                          </div>`;
+                    h += `<div class="offer-card animate__animated animate__fadeInUp" style="padding:18px;"><div style="display:flex; justify-content:space-between; align-items:start;"><div><h3 style="margin:0 0 2px 0;">${d.name} ${d.isVerified ? '<span class="gold-tick">✔</span>' : ''}</h3><div class="rating-stars" style="margin-bottom:5px;">⭐⭐⭐⭐⭐ 5.0</div><p style="font-size:12px; color:var(--text-muted); margin:0;">${d.exp} Yrs Exp | ${d.gender || 'Any'} | 📍 ${d.city.split(',')[0]}</p></div><span style="color:var(--success); font-weight:900; font-size:18px;">₹${d.salary}</span></div><div style="display:flex; gap:10px; align-items:center; margin-top:18px;"><button onclick="openDynamicVip('${encodedData}', 'seeker')" style="flex:1; background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); padding:10px; border-radius:10px; font-weight:bold; cursor:pointer;">👁️ View</button><button onclick="sendHireRequest('${d.id}', '${d.name}', '${d.phone}', '${d.salary}')" style="flex:2; background:var(--primary); color:#fff; border:none; padding:10px; border-radius:10px; font-weight:bold; cursor:pointer; box-shadow:0 4px 10px rgba(59,130,246,0.3);">Hire Now 🚀</button></div></div>`;
                 });
             } else {
                 const snap = await db.collection("JobSeekers").where("type", "==", "employer").get();
                 let results = [];
                 snap.forEach(doc => {
                     const d = doc.data();
-                    if(d.city.toLowerCase().includes(searchInputText) || d.pincode.includes(searchInputText)) {
-                         results.push({id: doc.id, ...d});
+                    if(d.city.toLowerCase().includes(searchInputText) || d.pincode.includes(searchInputText)) { 
+                        results.push({id: doc.id, ...d}); 
                     }
                 });
                 
                 results.sort((a, b) => (b.isVerified === true) - (a.isVerified === true)); 
 
                 results.forEach(d => {
-                    let empEncodedData = encodeURIComponent(JSON.stringify({
-                        name: d.name, hiredByAddress: d.address, city: d.city, pincode: d.pincode, phone: d.phone, hiringRole: d.hiringRole, shopCategory: d.shopCategory, photoURL: d.photoURL
-                    }));
+                    let empEncodedData = encodeURIComponent(JSON.stringify({ name: d.name, hiredByAddress: d.address, city: d.city, pincode: d.pincode, phone: d.phone, hiringRole: d.hiringRole, shopCategory: d.shopCategory, photoURL: d.photoURL }));
                     let jobRoleText = d.hiringRole ? `💼 Hiring: ${d.hiringRole}` : `💼 Staff Chahiye`;
                     let urgentHTML = d.isUrgent ? `<span class="urgent-tag">Urgent 🚨</span><br>` : '';
                     
-                    h += `<div class="offer-card animate__animated animate__fadeInUp" style="padding:18px;">
-                            ${urgentHTML}
-                            <div style="display:flex; justify-content:space-between; align-items:start;">
-                                <div>
-                                    <h3 style="margin:0 0 2px 0;">🏢 ${d.name} ${d.isVerified ? '<span class="gold-tick">✔</span>' : ''}</h3>
-                                    <div class="rating-stars" style="margin-bottom:5px;">⭐⭐⭐⭐⭐ 5.0</div>
-                                    <p style="color:var(--primary); font-size:13px; font-weight:bold; margin:0 0 5px 0;">${jobRoleText}</p>
-                                    <p style="font-size:12px; color:var(--text-muted); margin:0;">📍 ${d.address}, ${d.city.split(',')[0]}</p>
-                                </div>
-                            </div>
-                            <div style="display:flex; gap:10px; align-items:center; margin-top:18px;">
-                                <button onclick="openDynamicVip('${empEncodedData}', 'employer')" style="flex:1; background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); padding:10px; border-radius:10px; font-weight:bold; cursor:pointer; transition:0.2s;">👁️ View Shop</button>
-                                <button onclick="applyForJob('${d.uid}', '${d.name}', '${d.address}', '${d.phone}')" style="flex:2; background:var(--success); color:#fff; border:none; padding:10px; border-radius:10px; font-weight:bold; cursor:pointer; box-shadow:0 4px 10px rgba(16,185,129,0.3);">Apply Now 📝</button>
-                            </div>
-                          </div>`;
+                    h += `<div class="offer-card animate__animated animate__fadeInUp" style="padding:18px;">${urgentHTML}<div style="display:flex; justify-content:space-between; align-items:start;"><div><h3 style="margin:0 0 2px 0;">🏢 ${d.name} ${d.isVerified ? '<span class="gold-tick">✔</span>' : ''}</h3><div class="rating-stars" style="margin-bottom:5px;">⭐⭐⭐⭐⭐ 5.0</div><p style="color:var(--primary); font-size:13px; font-weight:bold; margin:0 0 5px 0;">${jobRoleText}</p><p style="font-size:12px; color:var(--text-muted); margin:0;">📍 ${d.address}, ${d.city.split(',')[0]}</p></div></div><div style="display:flex; gap:10px; align-items:center; margin-top:18px;"><button onclick="openDynamicVip('${empEncodedData}', 'employer')" style="flex:1; background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2); padding:10px; border-radius:10px; font-weight:bold; cursor:pointer;">👁️ View Shop</button><button onclick="applyForJob('${d.uid}', '${d.name}', '${d.address}', '${d.phone}')" style="flex:2; background:var(--success); color:#fff; border:none; padding:10px; border-radius:10px; font-weight:bold; cursor:pointer; box-shadow:0 4px 10px rgba(16,185,129,0.3);">Apply Now 📝</button></div></div>`;
                 });
             }
             resDiv.innerHTML = h || `<p style='text-align:center; color:var(--danger); font-weight:bold; margin-top:20px;'>Data nahi mila.</p>`;
         } catch(error) {
-            resDiv.innerHTML = "<p style='text-align:center; color:var(--danger);'>Network error.</p>";
+            console.error("Search Error:", error);
+            resDiv.innerHTML = "<p style='text-align:center; color:var(--danger);'>Network error. Dobara try karein.</p>";
         }
     }
 
     async function applyForJob(shopUid, shopName, shopAddress, shopPhone) {
         const uPhone = localStorage.getItem("rozgaarPhone");
         const snap = await db.collection("JobSeekers").where("phone", "==", uPhone).get();
-        const staffData = snap.docs[0].data();
-        const staffDocId = snap.docs[0].id;
+        const staffData = snap.docs[0].data(); const staffDocId = snap.docs[0].id;
 
-        if (staffData.hiredByUID) {
-            return Swal.fire("Hold On! ✋", "Aapne pehle se ek job ke liye apply kiya hua hai. Dusri jagah apply karne ke liye pehli request cancel karein.", "warning");
-        }
+        if (staffData.hiredByUID) { return Swal.fire("Hold On! ✋", "Aapne pehle se ek job ke liye apply kiya hua hai. Dusri jagah apply karne ke liye pehli request cancel karein.", "warning"); }
 
-        Swal.fire({
-            title: `Apply at ${shopName}?`,
-            text: "Dukaandaar ko aapki profile aur request bhej di jayegi.",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#10b981',
-            confirmButtonText: 'Yes, Apply Now! 🚀'
-        }).then(async (result) => {
+        Swal.fire({ title: `Apply at ${shopName}?`, text: "Dukaandaar ko aapki profile aur request bhej di jayegi.", icon: 'question', showCancelButton: true, confirmButtonColor: '#10b981', confirmButtonText: 'Yes, Apply Now! 🚀' }).then(async (result) => {
             if (result.isConfirmed) {
                 Swal.fire({ title: 'Sending Application...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-                
-                await db.collection("JobSeekers").doc(staffDocId).update({
-                    hiredByUID: shopUid, hiredByName: shopName, hiredByAddress: shopAddress,
-                    hiredByPhone: shopPhone, dealStatus: "Pending", status: "Busy", initiatedBy: "seeker"
-                });
-                
-                fireConfetti();
-                Swal.fire("Superb! 🎉", "Aapka aavedan (Application) bhej diya gaya hai.", "success");
-                loadHomeData(); 
+                await db.collection("JobSeekers").doc(staffDocId).update({ hiredByUID: shopUid, hiredByName: shopName, hiredByAddress: shopAddress, hiredByPhone: shopPhone, dealStatus: "Pending", status: "Busy", initiatedBy: "seeker" });
+                fireConfetti(); Swal.fire("Superb! 🎉", "Aapka aavedan bhej diya gaya hai.", "success"); loadHomeData(); 
             }
         });
     }
@@ -1171,80 +1058,44 @@
         const iconContainer = document.getElementById('vipDynamicIcon');
 
         if (d.photoURL) {
-            iconContainer.innerHTML = `<img src="${d.photoURL}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
-            iconContainer.style.border = "3px solid #d4af37";
+            iconContainer.innerHTML = `<img src="${d.photoURL}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`; iconContainer.style.border = "3px solid #d4af37";
         } else {
-            iconContainer.innerHTML = profileType === 'employer' ? '🏢' : '👨‍🔧';
-            iconContainer.style.border = "2px solid #d4af37";
+            iconContainer.innerHTML = profileType === 'employer' ? '🏢' : '👨‍🔧'; iconContainer.style.border = "2px solid #d4af37";
         }
         
         if(profileType === 'employer') {
             document.getElementById('vipDynamicName').innerText = d.hiredByName || d.name;
             document.getElementById('vipDynamicSubtitle').innerText = d.hiringRole ? `💼 Hiring: ${d.hiringRole}` : (d.shopCategory || 'Verified Business');
-            document.getElementById('vipLabel1').innerText = '📍 Full Address';
-            document.getElementById('vipVal1').innerText = d.hiredByAddress || d.address || 'Address not found';
-            document.getElementById('vipLabel2').innerText = '🏙️ City / Pincode';
-            document.getElementById('vipVal2').innerText = (d.city || 'City') + " (" + (d.pincode || 'Verified') + ")";
-            document.getElementById('vipRow3').style.display = 'none';
-            document.getElementById('vipRow4').style.display = 'none';
+            document.getElementById('vipLabel1').innerText = '📍 Full Address'; document.getElementById('vipVal1').innerText = d.hiredByAddress || d.address || 'Address not found';
+            document.getElementById('vipLabel2').innerText = '🏙️ City / Pincode'; document.getElementById('vipVal2').innerText = (d.city || 'City') + " (" + (d.pincode || 'Verified') + ")";
+            document.getElementById('vipRow3').style.display = 'none'; document.getElementById('vipRow4').style.display = 'none';
         } else {
             document.getElementById('vipDynamicName').innerText = d.name;
             document.getElementById('vipDynamicSubtitle').innerText = d.skill ? d.skill.split(' (')[0] : 'Worker';
-            document.getElementById('vipRow1').style.display = 'flex';
-            document.getElementById('vipLabel1').innerText = '💼 Experience & Age';
-            document.getElementById('vipVal1').innerText = d.exp + ' Yrs | Age: ' + (d.age || 'N/A');
-            document.getElementById('vipRow2').style.display = 'flex';
-            document.getElementById('vipLabel2').innerText = '🏢 Past Work';
-            document.getElementById('vipVal2').innerText = d.prevWork || 'Fresher';
-            document.getElementById('vipRow3').style.display = 'flex';
-            document.getElementById('vipLabel3').innerText = '📍 Location & Type';
-            document.getElementById('vipVal3').innerText = d.city.split(',')[0] + ' | ' + (d.workType || 'Full-Time');
-            document.getElementById('vipRow4').style.display = 'flex';
-            document.getElementById('vipLabel4').innerText = '💰 Expected Salary';
-            document.getElementById('vipVal4').innerText = '₹' + d.salary;
+            document.getElementById('vipRow1').style.display = 'flex'; document.getElementById('vipLabel1').innerText = '💼 Experience & Age'; document.getElementById('vipVal1').innerText = d.exp + ' Yrs | Age: ' + (d.age || 'N/A');
+            document.getElementById('vipRow2').style.display = 'flex'; document.getElementById('vipLabel2').innerText = '🏢 Past Work'; document.getElementById('vipVal2').innerText = d.prevWork || 'Fresher';
+            document.getElementById('vipRow3').style.display = 'flex'; document.getElementById('vipLabel3').innerText = '📍 Location & Type'; document.getElementById('vipVal3').innerText = d.city.split(',')[0] + ' | ' + (d.workType || 'Full-Time');
+            document.getElementById('vipRow4').style.display = 'flex'; document.getElementById('vipLabel4').innerText = '💰 Expected Salary'; document.getElementById('vipVal4').innerText = '₹' + d.salary;
         }
 
-        const modal = document.getElementById('vipDynamicModal');
-        modal.style.display = 'flex';
-        modal.classList.add('animate__fadeIn');
-        modal.classList.remove('animate__fadeOut');
+        const modal = document.getElementById('vipDynamicModal'); modal.style.display = 'flex'; modal.classList.add('animate__fadeIn'); modal.classList.remove('animate__fadeOut');
     }
 
-    function closeDynamicVip() {
-        const modal = document.getElementById('vipDynamicModal');
-        modal.classList.add('animate__fadeOut');
-        modal.classList.remove('animate__fadeIn');
-        setTimeout(() => { modal.style.display = 'none'; }, 300);
-    }
+    function closeDynamicVip() { const modal = document.getElementById('vipDynamicModal'); modal.classList.add('animate__fadeOut'); modal.classList.remove('animate__fadeIn'); setTimeout(() => { modal.style.display = 'none'; }, 300); }
 
     async function sendHireRequest(staffId, staffName, staffPhone, expectedSalary) {
-        Swal.fire({
-            title: `Hire ${staffName}?`, 
-            html: `<p style="font-size:13px; color:var(--text-muted);">Request bhejne ke baad aapka WhatsApp khulega jisse aap direct unhe message bhej payenge.</p>`,
-            icon: 'info', showCancelButton: true, confirmButtonText: 'WhatsApp Bhejein 💬',
-            cancelButtonText: 'Cancel', customClass: { confirmButton: 'wa-btn', popup: 'animate__animated animate__zoomIn' }
-        }).then(async (result) => {
+        Swal.fire({ title: `Hire ${staffName}?`, html: `<p style="font-size:13px; color:var(--text-muted);">Request bhejne ke baad aapka WhatsApp khulega.</p>`, icon: 'info', showCancelButton: true, confirmButtonText: 'WhatsApp Bhejein 💬', cancelButtonText: 'Cancel', customClass: { confirmButton: 'wa-btn', popup: 'animate__animated animate__zoomIn' } }).then(async (result) => {
             if (result.isConfirmed) {
-                Swal.fire({ title: 'Connecting to WhatsApp...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-
+                Swal.fire({ title: 'Connecting...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
                 const empPhone = localStorage.getItem("rozgaarPhone");
                 const empSnap = await db.collection("JobSeekers").where("phone", "==", empPhone).get();
                 const empData = empSnap.docs[0].data();
 
-                await db.collection("JobSeekers").doc(staffId).update({
-                    hiredByUID: empData.uid, hiredByName: empData.name, hiredByAddress: empData.address,
-                    hiredByPhone: empData.phone, dealStatus: "Pending", status: "Busy", initiatedBy: "employer" 
-                });
-
+                await db.collection("JobSeekers").doc(staffId).update({ hiredByUID: empData.uid, hiredByName: empData.name, hiredByAddress: empData.address, hiredByPhone: empData.phone, dealStatus: "Pending", status: "Busy", initiatedBy: "employer" });
                 const message = `Namaste ${staffName} ji, \n\nMain *${empData.name}* se bol raha hoon. *RozgaarIn* app par mujhe aapki profile mili.\n\nKya aap hamaare yahan kaam karna chahenge? \nSalary: ₹${expectedSalary}/mo.\n\nKripya reply karein.`;
                 const waUrl = `https://wa.me/91${staffPhone}?text=${encodeURIComponent(message)}`;
 
-                setTimeout(() => {
-                    Swal.close();
-                    fireConfetti();
-                    window.open(waUrl, '_blank');
-                    loadHomeData();
-                }, 1000);
+                setTimeout(() => { Swal.close(); fireConfetti(); window.open(waUrl, '_blank'); loadHomeData(); }, 1000);
             }
         });
     }
@@ -1253,11 +1104,7 @@
         let updateData = { dealStatus: status };
         if(status === 'Rejected') {
             updateData.status = "Available"; updateData.dealStatus = "None";
-            updateData.hiredByUID = firebase.firestore.FieldValue.delete(); 
-            updateData.hiredByName = firebase.firestore.FieldValue.delete();
-            updateData.hiredByAddress = firebase.firestore.FieldValue.delete();
-            updateData.hiredByPhone = firebase.firestore.FieldValue.delete();
-            updateData.initiatedBy = firebase.firestore.FieldValue.delete();
+            updateData.hiredByUID = firebase.firestore.FieldValue.delete(); updateData.hiredByName = firebase.firestore.FieldValue.delete(); updateData.hiredByAddress = firebase.firestore.FieldValue.delete(); updateData.hiredByPhone = firebase.firestore.FieldValue.delete(); updateData.initiatedBy = firebase.firestore.FieldValue.delete();
         }
         await db.collection("JobSeekers").doc(docId).update(updateData);
         Swal.fire(status === 'Accepted' ? "Congratulations! 🎉" : "Offer Rejected", status === 'Accepted' ? "Aap ab call kar sakte hain." : "Aap wapas Available mark ho gaye hain.", "success");
@@ -1265,21 +1112,11 @@
     }
 
     async function cancelRequest(docId) {
-        Swal.fire({
-            title: 'Action Confirm Karein',
-            text: "Kya aap sach mein isey cancel/end karna chahte hain?",
-            icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', confirmButtonText: 'Yes, Cancel ❌'
-        }).then(async (result) => {
+        Swal.fire({ title: 'Action Confirm Karein', text: "Kya aap sach mein isey cancel karna chahte hain?", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', confirmButtonText: 'Yes, Cancel ❌' }).then(async (result) => {
             if (result.isConfirmed) {
                 Swal.fire({ title: 'Processing...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-                await db.collection("JobSeekers").doc(docId).update({
-                    dealStatus: "None", status: "Available",
-                    hiredByUID: firebase.firestore.FieldValue.delete(), hiredByName: firebase.firestore.FieldValue.delete(),
-                    hiredByAddress: firebase.firestore.FieldValue.delete(), hiredByPhone: firebase.firestore.FieldValue.delete(),
-                    initiatedBy: firebase.firestore.FieldValue.delete()
-                });
-                Swal.fire('Done!', 'Job/Request cancel ho gayi hai.', 'success');
-                loadHomeData();
+                await db.collection("JobSeekers").doc(docId).update({ dealStatus: "None", status: "Available", hiredByUID: firebase.firestore.FieldValue.delete(), hiredByName: firebase.firestore.FieldValue.delete(), hiredByAddress: firebase.firestore.FieldValue.delete(), hiredByPhone: firebase.firestore.FieldValue.delete(), initiatedBy: firebase.firestore.FieldValue.delete() });
+                Swal.fire('Done!', 'Job/Request cancel ho gayi hai.', 'success'); loadHomeData();
             }
         });
     }
@@ -1288,11 +1125,9 @@
         const phone = localStorage.getItem("rozgaarPhone");
         const snap = await db.collection("JobSeekers").where("phone", "==", phone).get();
         if(!snap.empty) {
-            const docId = snap.docs[0].id;
-            const newStatus = checkbox.checked ? "Available" : "Busy";
+            const docId = snap.docs[0].id; const newStatus = checkbox.checked ? "Available" : "Busy";
             await db.collection("JobSeekers").doc(docId).update({ status: newStatus });
-            document.getElementById('status-text').innerText = newStatus === "Available" ? "Aap abhi Available hain" : "Aap abhi Busy hain";
-            document.getElementById('status-text').style.color = newStatus === "Available" ? "var(--success)" : "var(--danger)";
+            document.getElementById('status-text').innerText = newStatus === "Available" ? "Aap abhi Available hain" : "Aap abhi Busy hain"; document.getElementById('status-text').style.color = newStatus === "Available" ? "var(--success)" : "var(--danger)";
         }
     }
 
@@ -1300,240 +1135,93 @@
     // INSTAGRAM STYLE PHOTO UPLOAD & COMPRESSOR
     // ==========================================
     let tempProfilePicFile = null; 
-
     function previewProfilePic(event) {
         const file = event.target.files[0];
-        if (file) {
-            tempProfilePicFile = file; 
-            const reader = new FileReader();
-            reader.onload = function(e) { document.getElementById('profilePicPreview').src = e.target.result; }
-            reader.readAsDataURL(file);
-        }
+        if (file) { tempProfilePicFile = file; const reader = new FileReader(); reader.onload = function(e) { document.getElementById('profilePicPreview').src = e.target.result; }; reader.readAsDataURL(file); }
     }
 
     function compressImage(file, maxSize = 300) {
         return new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
+            const reader = new FileReader(); reader.readAsDataURL(file);
             reader.onload = (event) => {
                 const img = new Image(); img.src = event.target.result;
                 img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    let width = img.width; let height = img.height;
-                    if (width > height) { if (width > maxSize) { height = Math.round((height *= maxSize / width)); width = maxSize; } } 
-                    else { if (height > maxSize) { width = Math.round((width *= maxSize / height)); height = maxSize; } }
-                    canvas.width = width; canvas.height = height;
-                    const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
-                    resolve(canvas.toDataURL('image/jpeg', 0.7)); 
+                    const canvas = document.createElement('canvas'); let width = img.width; let height = img.height;
+                    if (width > height) { if (width > maxSize) { height = Math.round((height *= maxSize / width)); width = maxSize; } } else { if (height > maxSize) { width = Math.round((width *= maxSize / height)); height = maxSize; } }
+                    canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height); resolve(canvas.toDataURL('image/jpeg', 0.7)); 
                 };
             };
         });
     }
 
     async function openEditProfile() {
-        document.getElementById('profile-info-box').style.display = 'none';
-        document.getElementById('profile-edit-form').style.display = 'block';
-        
-        const uPhone = localStorage.getItem("rozgaarPhone");
-        const uType = localStorage.getItem("rozgaarType");
-        
+        document.getElementById('profile-info-box').style.display = 'none'; document.getElementById('profile-edit-form').style.display = 'block';
+        const uPhone = localStorage.getItem("rozgaarPhone"); const uType = localStorage.getItem("rozgaarType");
         Swal.fire({ title: 'Loading Profile...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-        const snap = await db.collection("JobSeekers").where("phone", "==", uPhone).get();
-        Swal.close();
+        const snap = await db.collection("JobSeekers").where("phone", "==", uPhone).get(); Swal.close();
+        if(snap.empty) return; const userData = snap.docs[0].data(); const container = document.getElementById('edit-dynamic-fields');
+        const photoUrl = userData.photoURL || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'; tempProfilePicFile = null; 
         
-        if(snap.empty) return;
-        const userData = snap.docs[0].data();
-        const container = document.getElementById('edit-dynamic-fields');
-        const photoUrl = userData.photoURL || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
-        tempProfilePicFile = null; 
-        
-        const photoUI = `
-            <div class="profile-pic-container">
-                <div class="profile-pic-wrapper" onclick="document.getElementById('profilePicInput').click()">
-                    <div class="profile-pic-circle"><img id="profilePicPreview" src="${photoUrl}" alt="Profile"></div>
-                    <div class="camera-icon-badge">📷</div>
-                </div>
-                <input type="file" id="profilePicInput" style="display:none;" accept="image/*" onchange="previewProfilePic(event)">
-                <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">Tap to change photo</p>
-            </div>
-        `;
+        const photoUI = `<div class="profile-pic-container"><div class="profile-pic-wrapper" onclick="document.getElementById('profilePicInput').click()"><div class="profile-pic-circle"><img id="profilePicPreview" src="${photoUrl}" alt="Profile"></div><div class="camera-icon-badge">📷</div></div><input type="file" id="profilePicInput" style="display:none;" accept="image/*" onchange="previewProfilePic(event)"><p style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">Tap to change photo</p></div>`;
         
         if(uType === 'employer') {
-            container.innerHTML = photoUI + `
-                <div class="input-group"><label>Shop Name</label><input type="text" id="editName" value="${userData.name}"></div>
-                <div class="input-group">
-                    <label>Category</label>
-                    <select id="editShopCat">
-                        <option value="Electronics & Furniture" ${userData.shopCategory==='Electronics & Furniture'?'selected':''}>Electronics & Furniture</option>
-                        <option value="Kirana / Grocery" ${userData.shopCategory==='Kirana / Grocery'?'selected':''}>Kirana / Grocery</option>
-                        <option value="Hardware & Sanitary" ${userData.shopCategory==='Hardware & Sanitary'?'selected':''}>Hardware & Sanitary</option>
-                        <option value="Other" ${userData.shopCategory==='Other'?'selected':''}>Other</option>
-                    </select>
-                </div>
-                <div class="input-group autocomplete-wrapper">
-                    <label>Hiring Role</label>
-                    <input type="text" id="editHiringRole" value="${userData.hiringRole || ''}" onkeyup="showJobSuggestions(this.value, 'editHiringRole-list', 'editHiringRole')" onfocus="showJobSuggestions(this.value, 'editHiringRole-list', 'editHiringRole')" autocomplete="off">
-                    <div id="editHiringRole-list" class="autocomplete-list"></div>
-                </div>
-                <div class="input-group"><label>Address</label><input type="text" id="editAddress" value="${userData.address}"></div>
-                <div class="flex-row">
-                    <div class="input-group"><label>Pincode</label><input type="number" id="editPin" value="${userData.pincode}" oninput="fetchCity(this.value, 'editCity')"></div>
-                    <div class="input-group"><label>City</label><input type="text" id="editCity" value="${userData.city}" readonly></div>
-                </div>
-            `;
+            container.innerHTML = photoUI + `<div class="input-group"><label>Shop Name</label><input type="text" id="editName" value="${userData.name}"></div><div class="input-group"><label>Category</label><select id="editShopCat"><option value="Electronics & Furniture" ${userData.shopCategory==='Electronics & Furniture'?'selected':''}>Electronics & Furniture</option><option value="Kirana / Grocery" ${userData.shopCategory==='Kirana / Grocery'?'selected':''}>Kirana / Grocery</option><option value="Hardware & Sanitary" ${userData.shopCategory==='Hardware & Sanitary'?'selected':''}>Hardware & Sanitary</option><option value="Other" ${userData.shopCategory==='Other'?'selected':''}>Other</option></select></div><div class="input-group autocomplete-wrapper"><label>Hiring Role</label><input type="text" id="editHiringRole" value="${userData.hiringRole || ''}" onkeyup="showJobSuggestions(this.value, 'editHiringRole-list', 'editHiringRole')" onfocus="showJobSuggestions(this.value, 'editHiringRole-list', 'editHiringRole')" autocomplete="off"><div id="editHiringRole-list" class="autocomplete-list"></div></div><div class="input-group"><label>Address</label><input type="text" id="editAddress" value="${userData.address}"></div><div class="flex-row"><div class="input-group"><label>Pincode</label><input type="number" id="editPin" value="${userData.pincode}" oninput="fetchCity(this.value, 'editCity')"></div><div class="input-group"><label>City</label><input type="text" id="editCity" value="${userData.city}" readonly></div></div>`;
         } else {
-            container.innerHTML = photoUI + `
-                <div class="input-group"><label>Full Name</label><input type="text" id="editName" value="${userData.name}"></div>
-                <div class="input-group autocomplete-wrapper">
-                    <label>Skill</label>
-                    <input type="text" id="editSkill" value="${userData.skill}" onkeyup="showJobSuggestions(this.value, 'editSkill-list', 'editSkill')" onfocus="showJobSuggestions(this.value, 'editSkill-list', 'editSkill')" autocomplete="off">
-                    <div id="editSkill-list" class="autocomplete-list"></div>
-                </div>
-                <div class="flex-row">
-                    <div class="input-group"><label>Exp (Yrs)</label><input type="number" id="editExp" value="${userData.exp}"></div>
-                    <div class="input-group"><label>Salary (₹)</label><input type="number" id="editSalary" value="${userData.salary}"></div>
-                </div>
-                <div class="flex-row">
-                    <div class="input-group"><label>Pincode</label><input type="number" id="editPin" value="${userData.pincode}" oninput="fetchCity(this.value, 'editCity')"></div>
-                    <div class="input-group"><label>City</label><input type="text" id="editCity" value="${userData.city}" readonly></div>
-                </div>
-            `;
+            container.innerHTML = photoUI + `<div class="input-group"><label>Full Name</label><input type="text" id="editName" value="${userData.name}"></div><div class="input-group autocomplete-wrapper"><label>Skill</label><input type="text" id="editSkill" value="${userData.skill}" onkeyup="showJobSuggestions(this.value, 'editSkill-list', 'editSkill')" onfocus="showJobSuggestions(this.value, 'editSkill-list', 'editSkill')" autocomplete="off"><div id="editSkill-list" class="autocomplete-list"></div></div><div class="flex-row"><div class="input-group"><label>Exp (Yrs)</label><input type="number" id="editExp" value="${userData.exp}"></div><div class="input-group"><label>Salary (₹)</label><input type="number" id="editSalary" value="${userData.salary}"></div></div><div class="flex-row"><div class="input-group"><label>Pincode</label><input type="number" id="editPin" value="${userData.pincode}" oninput="fetchCity(this.value, 'editCity')"></div><div class="input-group"><label>City</label><input type="text" id="editCity" value="${userData.city}" readonly></div></div>`;
         }
     }
 
-    function cancelEdit() {
-        document.getElementById('profile-edit-form').style.display = 'none';
-        document.getElementById('profile-info-box').style.display = 'block';
-    }
+    function cancelEdit() { document.getElementById('profile-edit-form').style.display = 'none'; document.getElementById('profile-info-box').style.display = 'block'; }
 
     async function saveProfile() {
-        const uPhone = localStorage.getItem("rozgaarPhone");
-        const uType = localStorage.getItem("rozgaarType");
+        const uPhone = localStorage.getItem("rozgaarPhone"); const uType = localStorage.getItem("rozgaarType");
+        const snap = await db.collection("JobSeekers").where("phone", "==", uPhone).get(); if(snap.empty) return; const docId = snap.docs[0].id;
         
-        const snap = await db.collection("JobSeekers").where("phone", "==", uPhone).get();
-        if(snap.empty) return;
-        const docId = snap.docs[0].id;
-        
-        let updateData = {
-            name: document.getElementById('editName').value,
-            pincode: document.getElementById('editPin').value,
-            city: document.getElementById('editCity').value
-        };
-        
-        if(uType === 'employer') {
-            updateData.address = document.getElementById('editAddress').value;
-            updateData.hiringRole = document.getElementById('editHiringRole').value; 
-            updateData.shopCategory = document.getElementById('editShopCat').value; 
-        } else {
-            const editedSkill = document.getElementById('editSkill').value;
-            if(!commonJobs.includes(editedSkill)) { return Swal.fire("Galat Kaam", "Kripya kaam ka naam List me se chunein.", "warning"); }
-            updateData.skill = editedSkill;
-            updateData.exp = document.getElementById('editExp').value;
-            updateData.salary = Number(document.getElementById('editSalary').value);
-        }
+        let updateData = { name: document.getElementById('editName').value, pincode: document.getElementById('editPin').value, city: document.getElementById('editCity').value };
+        if(uType === 'employer') { updateData.address = document.getElementById('editAddress').value; updateData.hiringRole = document.getElementById('editHiringRole').value; updateData.shopCategory = document.getElementById('editShopCat').value; } 
+        else { const editedSkill = document.getElementById('editSkill').value; if(!commonJobs.includes(editedSkill)) { return Swal.fire("Galat Kaam", "Kripya kaam ka naam List me se chunein.", "warning"); } updateData.skill = editedSkill; updateData.exp = document.getElementById('editExp').value; updateData.salary = Number(document.getElementById('editSalary').value); }
         
         Swal.fire({ title: 'Saving Profile...', text: 'Data aur Photo upload ho rahi hai ⏳', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-        
-        if (tempProfilePicFile) {
-            try {
-                const base64Photo = await compressImage(tempProfilePicFile);
-                updateData.photoURL = base64Photo; 
-            } catch (err) { console.error("Photo compress error", err); }
-        }
+        if (tempProfilePicFile) { try { const base64Photo = await compressImage(tempProfilePicFile); updateData.photoURL = base64Photo; } catch (err) { console.error("Photo compress error", err); } }
         
         await db.collection("JobSeekers").doc(docId).update(updateData);
-        
-        let nameTitle = updateData.name.split(' ')[0];
-        if(snap.docs[0].data().isVerified) { nameTitle += ' <span class="gold-tick">✔</span>'; }
-        document.getElementById('dash-greeting').innerHTML = `Hi, ${nameTitle} 👋`;
-        document.getElementById('prof-pin').innerText = updateData.pincode;
-        
-        cancelEdit();
-        Swal.fire("Updated! ✨", "Aapki profile aur photo update ho gayi hai.", "success").then(() => goToDashboard());
+        let nameTitle = updateData.name.split(' ')[0]; if(snap.docs[0].data().isVerified) { nameTitle += ' <span class="gold-tick">✔</span>'; }
+        document.getElementById('dash-greeting').innerHTML = `Hi, ${nameTitle} 👋`; document.getElementById('prof-pin').innerText = updateData.pincode;
+        cancelEdit(); Swal.fire("Updated! ✨", "Aapki profile aur photo update ho gayi hai.", "success").then(() => goToDashboard());
     }
 
     // ==========================================
-    // PHASE 7: ADMIN LOGIC (GOLDEN TICK INCLUDED)
+    // ADMIN LOGIC (GOLDEN TICK)
     // ==========================================
-    async function toggleVerify(docId, makeVerified) {
-        Swal.fire({ title: 'Updating Status...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-        await db.collection("JobSeekers").doc(docId).update({ isVerified: makeVerified });
-        Swal.close();
-        const activeType = document.getElementById('admin-tab-emp').classList.contains('active-tab') ? 'employer' : 'seeker';
-        loadAdminData(activeType);
-    }
+    async function toggleVerify(docId, makeVerified) { Swal.fire({ title: 'Updating Status...', allowOutsideClick: false, didOpen: () => Swal.showLoading() }); await db.collection("JobSeekers").doc(docId).update({ isVerified: makeVerified }); Swal.close(); const activeType = document.getElementById('admin-tab-emp').classList.contains('active-tab') ? 'employer' : 'seeker'; loadAdminData(activeType); }
 
     async function loadAdminData(type) {
-        document.getElementById('admin-tab-emp').classList.remove('active-tab');
-        document.getElementById('admin-tab-staff').classList.remove('active-tab');
-        if(type === 'employer') document.getElementById('admin-tab-emp').classList.add('active-tab');
-        else document.getElementById('admin-tab-staff').classList.add('active-tab');
-
-        const listDiv = document.getElementById('admin-list-container');
-        listDiv.innerHTML = "<p style='text-align:center; color:#fff; font-weight:bold;'>Loading Data... ⏳</p>";
-
+        document.getElementById('admin-tab-emp').classList.remove('active-tab'); document.getElementById('admin-tab-staff').classList.remove('active-tab');
+        if(type === 'employer') document.getElementById('admin-tab-emp').classList.add('active-tab'); else document.getElementById('admin-tab-staff').classList.add('active-tab');
+        const listDiv = document.getElementById('admin-list-container'); listDiv.innerHTML = "<p style='text-align:center; color:#fff; font-weight:bold;'>Loading Data... ⏳</p>";
         try {
-            const empSnap = await db.collection("JobSeekers").where("type", "==", "employer").get();
-            const staffSnap = await db.collection("JobSeekers").where("type", "==", "seeker").get();
-            document.getElementById('adminTotalShops').innerText = empSnap.size;
-            document.getElementById('adminTotalStaff').innerText = staffSnap.size;
-
-            const snap = await db.collection("JobSeekers").where("type", "==", type).get();
-            let h = "";
+            const empSnap = await db.collection("JobSeekers").where("type", "==", "employer").get(); const staffSnap = await db.collection("JobSeekers").where("type", "==", "seeker").get();
+            document.getElementById('adminTotalShops').innerText = empSnap.size; document.getElementById('adminTotalStaff').innerText = staffSnap.size;
+            const snap = await db.collection("JobSeekers").where("type", "==", type).get(); let h = "";
             snap.forEach(doc => {
                 const d = doc.data();
-                let verifyBtnHTML = d.isVerified 
-                    ? `<button onclick="toggleVerify('${doc.id}', false)" style="background:transparent; border:1px solid #d4af37; color:#d4af37; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:bold; cursor:pointer; width:100%;">Remove VIP ❌</button>`
-                    : `<button onclick="toggleVerify('${doc.id}', true)" style="background:linear-gradient(135deg, #d4af37, #fcf6ba); border:none; color:#000; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:900; cursor:pointer; width:100%; box-shadow: 0 4px 10px rgba(212,175,55,0.3);">Make VIP ✔</button>`;
-                    
-                h += `<div class="admin-user-card animate__animated animate__fadeInUp">
-                        <div class="admin-user-info" style="flex:1; padding-right:10px;">
-                            <h4>${d.isVerified ? '<span class="gold-tick">✔</span>' : ''} ${type === 'employer' ? '🏢' : '👨‍🔧'} ${d.name}</h4>
-                            <p>📞 ${d.phone} | 📍 ${d.city}</p>
-                            <p style="color:var(--primary); font-weight:bold; margin-top:3px;">${type === 'employer' ? (d.hiringRole ? `Hiring: ${d.hiringRole}` : 'Shop Owner') : d.skill}</p>
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:8px; width:90px;">
-                            ${verifyBtnHTML}
-                            <button class="btn-delete-user" style="padding:6px 12px; font-size:11px;" onclick="deleteUser('${doc.id}', '${d.name}')">Delete 🗑️</button>
-                        </div>
-                      </div>`;
+                let verifyBtnHTML = d.isVerified ? `<button onclick="toggleVerify('${doc.id}', false)" style="background:transparent; border:1px solid #d4af37; color:#d4af37; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:bold; cursor:pointer; width:100%;">Remove VIP ❌</button>` : `<button onclick="toggleVerify('${doc.id}', true)" style="background:linear-gradient(135deg, #d4af37, #fcf6ba); border:none; color:#000; padding:6px 12px; border-radius:8px; font-size:11px; font-weight:900; cursor:pointer; width:100%; box-shadow: 0 4px 10px rgba(212,175,55,0.3);">Make VIP ✔</button>`;
+                h += `<div class="admin-user-card animate__animated animate__fadeInUp"><div class="admin-user-info" style="flex:1; padding-right:10px;"><h4>${d.isVerified ? '<span class="gold-tick">✔</span>' : ''} ${type === 'employer' ? '🏢' : '👨‍🔧'} ${d.name}</h4><p>📞 ${d.phone} | 📍 ${d.city}</p><p style="color:var(--primary); font-weight:bold; margin-top:3px;">${type === 'employer' ? (d.hiringRole ? `Hiring: ${d.hiringRole}` : 'Shop Owner') : d.skill}</p></div><div style="display:flex; flex-direction:column; gap:8px; width:90px;">${verifyBtnHTML}<button class="btn-delete-user" style="padding:6px 12px; font-size:11px;" onclick="deleteUser('${doc.id}', '${d.name}')">Delete 🗑️</button></div></div>`;
             });
             listDiv.innerHTML = h || "<p style='text-align:center; color:#aaa;'>Koi user nahi mila.</p>";
         } catch(e) { listDiv.innerHTML = "<p style='color:var(--danger); text-align:center;'>Error loading data.</p>"; }
     }
 
-    async function deleteUser(docId, name) {
-        Swal.fire({
-            title: `Delete ${name}?`, text: "Yeh user database se hamesha ke liye delete ho jayega!",
-            icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', confirmButtonText: 'Yes, Delete!'
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                Swal.fire({ title: 'Deleting...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-                await db.collection("JobSeekers").doc(docId).delete();
-                Swal.fire('Deleted!', 'User uda diya gaya hai.', 'success');
-                const activeType = document.getElementById('admin-tab-emp').classList.contains('active-tab') ? 'employer' : 'seeker';
-                loadAdminData(activeType);
-            }
-        });
-    }
+    async function deleteUser(docId, name) { Swal.fire({ title: `Delete ${name}?`, text: "Yeh user database se hamesha ke liye delete ho jayega!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', confirmButtonText: 'Yes, Delete!' }).then(async (result) => { if (result.isConfirmed) { Swal.fire({ title: 'Deleting...', allowOutsideClick: false, didOpen: () => Swal.showLoading() }); await db.collection("JobSeekers").doc(docId).delete(); Swal.fire('Deleted!', 'User uda diya gaya hai.', 'success'); const activeType = document.getElementById('admin-tab-emp').classList.contains('active-tab') ? 'employer' : 'seeker'; loadAdminData(activeType); } }); }
 
     // ==========================================
     // WHATSAPP SHARE LOGIC
     // ==========================================
-    function shareApp() {
-        const shareText = "Bhai, maine apne shehar ka naya 'RozgaarIn' app join kiya hai! 🚀\n\nYahan dukaandaar aur workers direct jud sakte hain. Abhi free me apni profile banao aur Golden VIP Tick pao! 👇\n";
-        if (navigator.share) {
-            navigator.share({ title: 'RozgaarIn', text: shareText, url: window.location.href }).catch(err => console.log('Error sharing:', err));
-        } else {
-            const waUrl = `https://wa.me/?text=${encodeURIComponent(shareText + "\n" + window.location.href)}`;
-            window.open(waUrl, '_blank');
-        }
-    }
+    function shareApp() { const shareText = "Bhai, maine apne shehar ka naya 'RozgaarIn' app join kiya hai! 🚀\n\nYahan dukaandaar aur workers direct jud sakte hain. Abhi free me apni profile banao aur Golden VIP Tick pao! 👇\n"; if (navigator.share) { navigator.share({ title: 'RozgaarIn', text: shareText, url: window.location.href }).catch(err => console.log('Error sharing:', err)); } else { const waUrl = `https://wa.me/?text=${encodeURIComponent(shareText + "\n" + window.location.href)}`; window.open(waUrl, '_blank'); } }
 
     function logout() { localStorage.clear(); location.reload(); }
 
     window.onload = () => { if(localStorage.getItem("rozgaarUID")) goToDashboard(); };
 </script>
-
 </body>
 </html>
